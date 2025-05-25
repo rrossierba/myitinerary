@@ -1,21 +1,78 @@
-.nav-link{
-    border-radius: 20px;
-}
-
-.nav-link:hover {
-    background-color: #f0f0f0;  
-    border-radius: 20px;
-}
-
-body{
-    max-width: 75%;
-    margin-left: 12.5%;
-}
-
-.search-form input:focus,
-.search-form .btn:focus,
-.search-form .form-control:focus {
+.nav-link {
     outline: none !important;
     box-shadow: none !important;
     border-color: transparent !important;
+}
+
+.nav-link:hover {
+    background-color: #f0f0f0;
+}
+
+/* Search form */
+.search-form {
+    transition: all 0.3s ease;
+}
+
+.search-form:focus-within {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.search-box:focus-within {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+}
+
+.suggestions {
+    top: 100%;
+    left: 0;
+    right: 0;
+    border-radius: 15px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+#search-itinerary-test:focus-within + .suggestions {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+.suggestion-item {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.suggestion-item:hover {
+    background: #f8f9fa;
+}
+
+.recent-searches {
+    font-size: 0.8rem;
+    font-style: italic;
+    padding: 1rem;
+}
+
+/* navbar */
+.nav-color {
+    background-color: #047b27;
+}
+
+/* Cards */
+.home-card {
+    transition: transform 0.3s ease;
+}
+
+.home-card:hover {
+    transform: scale(1.03);
+    /* ingrandisce del 5% */
+}
+
+.card-img-top {
+    height: 250px;
+    /* altezza fissa dell'immagine */
+    object-fit: cover;
 }

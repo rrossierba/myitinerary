@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Favorites;
+use App\Models\Itinerary;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class FavoritesController extends Controller
 {
@@ -12,15 +15,10 @@ class FavoritesController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $favouriteIds = Favorites::where('user_id', auth()->id())->pluck('itinerary_id');
+        $itineraries = Itinerary::whereIn('id', $favouriteIds)->get();
+        return view('itinerary.userFavourites')
+        ->with('itineraries', $itineraries);
     }
 
     /**
@@ -28,38 +26,23 @@ class FavoritesController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        Favorites::create([
+            'user_id' => auth()->id(),
+            'itinerary_id' => $request->itineraryId,
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Favorites $favorites)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Favorites $favorites)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Favorites $favorites)
-    {
-        //
+        return Redirect::to(route('itinerary.show', ['itinerary'=> $request->itineraryId]));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Favorites $favorites)
-    {
-        //
+    public function destroy($favourite)
+    {   
+        // soft delete, to be done with AJAX
+        $to_delete = Favorites::find($favourite);
+        $to_delete->delete();
+        //return 'favourite' removed
+        return Redirect::to(route('home'));
     }
 }

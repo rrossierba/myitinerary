@@ -1,7 +1,6 @@
 <?php
 
-namespace App;
-
+namespace App\Enum;
 enum Visibility:string
 {
     case PUBLIC = 'public';

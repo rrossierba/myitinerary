@@ -9,4 +9,17 @@ class City extends Model
 {
     /** @use HasFactory<\Database\Factories\CityFactory> */
     use HasFactory;
+
+    protected $table = 'cities';
+
+    protected $fillable = [
+        'name',
+    ];
+
+    public function itineraries()
+    {
+        return $this->hasMany(Itinerary::class, 'itinerary_id', 'id');
+    }
+
+
 }

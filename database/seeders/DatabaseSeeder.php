@@ -2,8 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\Favorites;
 use App\Models\User;
+use App\Models\City;
+use App\Models\Itinerary;
+use App\Models\Like;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Hash;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,11 +18,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory()->create([
+            'name' => 'Mario Rossi',
+            'email' => 'mario@example.it',
+            'password' => Hash::make('12345678'),
+            'role' => 'admin'
+        ]);
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Pietro Bianchi',
+            'email' => 'pietro@example.it',
+            'password' => Hash::make('12345678'),
         ]);
+
+        User::factory()->create([
+            'name' => 'Gino Verdi',
+            'email' => 'gino@example.it',
+            'password' => Hash::make('12345678'),
+        ]);
+
+        City::factory()->count(10)->create();
+        Itinerary::factory()->count(100)->create();
+        Favorites::factory()->count(10)->create();
+
     }
 }

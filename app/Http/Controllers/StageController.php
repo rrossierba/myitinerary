@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Itinerary;
 use App\Models\Stage;
 use Illuminate\Http\Request;
 
@@ -19,8 +20,10 @@ class StageController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        //
+    {   
+        $itineraries = Itinerary::where('user_id', auth()->id())->orderBy('created_at', 'desc')->get();
+        return view('stage.editStage')
+        ->with('itineraries', $itineraries);
     }
 
     /**
@@ -28,7 +31,16 @@ class StageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Stage::create([
+            'location'=>$request->input('inputLocation'),
+            'description'=>$request->input('textDescription'),
+            'duration'=>$request->input('inputDuration'),
+            'cost'=>$request->input('inputPrice'),
+            'photo'=>$request->input(''),
+            'itinerary_id'=>$request->input('itinerarySelect'),
+        ]);
+
+        return($request->submit);
     }
 
     /**

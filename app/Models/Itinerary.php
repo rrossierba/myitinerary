@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use League\Flysystem\Visibility;
+use App\Enum\Visibility;
 
 class Itinerary extends Model
 {
@@ -17,10 +17,41 @@ class Itinerary extends Model
         'title',
         'city_id',
         'user_id',
-        'visibility'
+        'visibility',
+        'price',
+        'like'
     ];
 
     protected $casts = [
         'visibility' => Visibility::class,
     ];
+
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id', 'id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function favourites()
+    {
+        return $this->hasMany(Favorites::class, 'itinerary_id', 'id');
+    }
+
+    public function isFavouriteByUser($user_id){
+        return $this->favourites()
+                ->where('user_id', $user_id)
+                ->exists();
+    }
+
+    public function getFavouriteByUserId($user_id){
+        return $this->favourites()
+                ->where('user_id', $user_id)->get()->first();
+    }
+
+    public function stages(){
+        return $this->hasMany(Stage::class,'itinerary_id', 'id');
+    }
 }

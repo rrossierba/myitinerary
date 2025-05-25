@@ -9,4 +9,19 @@ class Stage extends Model
 {
     /** @use HasFactory<\Database\Factories\StageFactory> */
     use HasFactory;
+
+    protected $table = 'stages';
+
+    protected $fillable = [
+        'location',
+        'description',
+        'duration',
+        'cost',
+        'photo',
+        'itinerary_id',
+    ];
+
+    public function itinerary(){
+        return $this->belongsTo(Itinerary::class, 'itinerary_id', 'id');
+    }
 }
