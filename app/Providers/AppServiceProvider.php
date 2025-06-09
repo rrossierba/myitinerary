@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Itinerary;
+use App\Models\Stage;
+use App\Policies\ItineraryPolicy;
+use App\Policies\StagePolicy;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,4 +25,8 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
+
+    protected $policies = [
+        Itinerary::class => ItineraryPolicy::class,
+    ];
 }

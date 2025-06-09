@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Itinerary;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,11 @@ class StageFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'location'=>$this->faker->streetName(),
+            'description'=>$this->faker->realText(),
+            'duration'=>$this->faker->randomDigit(),
+            'cost'=>$this->faker->randomFloat(2, 10, 500),
+            'itinerary_id'=>Itinerary::inRandomOrder()->first()?->id ?? Itinerary::factory(),
         ];
     }
 }

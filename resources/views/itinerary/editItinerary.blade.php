@@ -32,6 +32,26 @@
             @endif
 
                 @csrf
+
+                <div class="row justify-content-end mb-2">
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <input type="submit" class="d-none" id="editSubmit">
+                        @if (isset($itinerary))
+                            <label for="editSubmit" class="btn btn-success w-100"><i class="bi bi-floppy"></i> Salva</label>
+                        @else
+                            <label for="editSubmit" class="btn btn-success w-100"><i class="bi bi-pencil"></i> Aggiungi tappe</label>
+                        @endif
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        @if (isset($itinerary))
+                            <a href="{{ route('itinerary.show', ['itinerary' => $itinerary]) }}" class="btn btn-danger w-100"><i
+                                    class="bi bi-x-lg"></i> Annulla</a>
+                        @else
+                            <a href="{{ route('home') }}" class="btn btn-danger w-100"><i class="bi bi-x-lg"></i> Annulla</a>
+                        @endif
+                    </div>
+                </div>
+
                 <!-- titolo -->
                 <div class="row mb-3">
                     <div class="col-lg-2 col-md-3 col-sm-12">
@@ -52,7 +72,7 @@
                     <div class="col-lg-2 col-md-3 col-sm-12">
                         <label for="citySelector">Seleziona la Città</label>
                     </div>
-                    <div class="col-lg-10 col-md-9 col-sm-12">
+                    <div class="col-lg-4 col-md-9 col-sm-12">
                         <select class="form-select" aria-label="Seleziona Città" id="citySelector" name="citySelector">
                             @if (isset($itinerary))
                                 @foreach ($cities as $city)
@@ -71,10 +91,6 @@
                         </select>
                     </div>
 
-                </div>
-
-                <!-- visibilità e prezzo -->
-                <div class="row mb-3">
                     <div class="col-lg-2 col-md-2 col-sm-6">
                         <label>Visibilità</label>
                     </div>
@@ -99,40 +115,40 @@
                             <label class="btn btn-light rounded-pill" for="radioPrivate">Privata</label>
                         @endif
                     </div>
-
-                    <div class="col-lg-2 col-md-3 col-sm-6">
-                        <label for="inputPrice">Prezzo:</label>
-                    </div>
-                    <div class="col-lg-4 col-md-3 col-sm-6">
-                        @if (isset($itinerary))
-                            <input type="number" id="inputPrice" name="inputPrice" min="0" max="1000" class="form-control"
-                                value="{{ $itinerary->price }}" step="0.01">
-                        @else
-                            <input type="number" id="inputPrice" name="inputPrice" min="0" max="1000" class="form-control"
-                                step="0.01">
-                        @endif
-                    </div>
-                </div>
-
-                <div class="row justify-content-center">
-                    <div class="col-4">
-                        <input type="submit" class="d-none" id="editSubmit">
-                        @if (isset($itinerary))
-                            <label for="editSubmit" class="btn btn-success w-100">Modifica e vai alle tappe</label>
-                        @else
-                            <label for="editSubmit" class="btn btn-success w-100">Salva e aggiungi tappe</label>
-                        @endif
-                    </div>
-                    <div class="col-4">
-                        @if (isset($itinerary))
-                            <a href="{{ route('itinerary.show', ['itinerary' => $itinerary]) }}"
-                                class="btn btn-danger w-100">Annulla</a>
-                        @else
-                            <a href="{{ route('home') }}" class="btn btn-danger w-100">Annulla</a>
-                        @endif
-                    </div>
                 </div>
             </form>
+            @if (isset($itinerary->stages))
+                <h3>Modifica tappe</h3>
+                <ul class="list-group">
+                    @foreach ($itinerary->stages as $stage)
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-lg-4 col-6">
+                                    {{ $stage->location }}
+                                </div>
+                                <div class="col-lg-2 col-3">
+                                    Prezzo: {{ $stage->cost }} €
+                                </div>
+                                <div class="col-lg-2 col-3">
+                                    Durata: {{ $stage->duration }} min.
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <a href="{{ route('stage.edit', ['stage' => $stage]) }}" class="btn btn-primary mb-2 w-100"><i
+                                            class="bi bi-pencil"></i> Modifica Tappa</a>
+                                </div>
+                                <div class="col-lg-2 col-6">
+                                    <a href="{{ route('stage.destroy.confirm', ['stage'=>$stage]) }}" class="btn btn-danger mb-2 w-100"><i class="bi bi-trash"></i> Elimina</a>
+                                </div>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+                <div class="row justify-content-center mt-2">
+                    <div class="col-6">
+                        <a href="{{ route('stage.add', ['itinerary'=>$itinerary]) }}" class="btn btn-primary w-100"><i class="bi bi-plus"></i> Aggiungi tappe</a>
+                    </div>
+                </div>
+            @endif
     @else
             <p>Prima di creare itinerari devi effettuare il login</p>
 

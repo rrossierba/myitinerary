@@ -15,7 +15,7 @@
                         </h5>
                     </div>
                     <div class="col-lg-2 col-4">
-                        @if (auth()->check())
+                        @if (auth()->check() && auth()->id()!=$itinerary->user->id)
                             @if ($itinerary->isFavouriteByUser(auth()->id()))
                                 <button class="btn btn-secondary w-100 mb-2">
                                     <i class="bi bi-check-lg"></i>
@@ -39,7 +39,7 @@
                         </div>
                         <div class="badge bg-primary fs-6 mb-2">
                             <i class="bi bi-currency-euro"></i>
-                            {{ number_format($itinerary->price, 2, ',', '.') }}
+                            {{ number_format($itinerary->stages->sum('cost'), 2, ',', '.') }}
                         </div>
                         <div class="badge bg-success fs-6 mb-2">
                             <i class="bi bi-person-fill"></i>

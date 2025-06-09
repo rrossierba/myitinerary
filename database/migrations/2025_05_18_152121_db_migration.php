@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('title');
             $table->foreignId('city_id')->constrained('cities')->onDelete('cascade');
             $table->string('visibility')->default('public'); // Assuming visibility is a string, adjust as necessary
-            $table->decimal('price', 8, 2)->default(0.0);
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
@@ -44,8 +43,11 @@ return new class extends Migration
 
         Schema::create('stages', function (Blueprint $table){
             $table->id();
-            $table->string('location');
-            $table->
+            $table->string('location')->nullable(true);
+            $table->string('description')->nullable(true);
+            $table->integer('duration')->nullable(true);
+            $table->decimal('cost', 8, 2)->default(0.0);
+            $table->foreignId('itinerary_id')->constrained('itinerary')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -59,5 +61,6 @@ return new class extends Migration
         Schema::dropIfExists('itinerary');
         Schema::dropIfExists('research');
         Schema::dropIfExists('favourites');
+        Schema::dropIfExists('stages');
     }
 };

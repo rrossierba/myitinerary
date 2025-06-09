@@ -37,7 +37,7 @@
                         </div>
                         <div class="badge bg-primary fs-6 mb-2">
                             <i class="bi bi-currency-euro"></i>
-                            {{ number_format($itinerary->price, 2, ',', '.') }}
+                            {{ number_format($itinerary->stages->sum('cost'), 2, ',', '.') }}
                         </div>
                         <div class="badge bg-success fs-6 mb-2">
                             <i class="bi bi-person-fill"></i>

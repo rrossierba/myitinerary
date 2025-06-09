@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enum\SearchGroups;
 use App\Models\City;
 use App\Models\DTO\Filter;
 use App\Models\Itinerary;
@@ -12,6 +11,11 @@ use Illuminate\Support\Facades\Redirect;
 
 class ItineraryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->only(['create', 'store', 'edit', 'update', 'destroy', 'user_itineraries', 'confirmDestroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -37,15 +41,14 @@ class ItineraryController extends Controller
      */
     public function store(Request $request)
     {
-        Itinerary::create([
+        $itinerary = Itinerary::create([
             'title' => $request->input('inputTitle'),
             'city_id' => $request->input('citySelector'),
             'visibility' => $request->input('visibilitaRadio'),
-            'price' => $request->input('inputPrice'),
             'user_id' => auth()->id(),
         ]);
         
-        return Redirect::to(route('stage.create'));
+        return Redirect::to(route('stage.create', ['itinerary'=>$itinerary]));
     }
 
     /**
@@ -53,6 +56,7 @@ class ItineraryController extends Controller
      */
     public function show(Itinerary $itinerary)
     {
+        $this->authorize('view', $itinerary);
         return view('itinerary.itineraryDetail')->with('itinerary', $itinerary);
     }
 
@@ -61,6 +65,7 @@ class ItineraryController extends Controller
      */
     public function edit(Itinerary $itinerary)
     {
+        $this->authorize('isOwner', $itinerary);
         $cities = City::orderBy('name','desc')->get();
         return view('itinerary.editItinerary')
         ->with('itinerary', $itinerary)
@@ -72,10 +77,10 @@ class ItineraryController extends Controller
      */
     public function update(Request $request, Itinerary $itinerary)
     {
+        $this->authorize('isOwner', $itinerary);
         $itinerary->title = $request->inputTitle;
         $itinerary->city_id = City::find($request->citySelector)->id;
-        $itinerary->visibility = $request->visibilitaRadio;
-        $itinerary->price = $request->inputPrice;
+        $itinerary->visibility = $request->visibilitaRadio;;
         $itinerary->save();
 
         return Redirect::to(route('itinerary.show', ['itinerary'=>$itinerary]));
@@ -86,7 +91,14 @@ class ItineraryController extends Controller
      */
     public function destroy(Itinerary $itinerary)
     {
-        //
+        $this->authorize('isOwner', $itinerary);
+        $itinerary->delete();
+        return Redirect::to(route('itinerary.user.created'));
+    }
+
+    public function confirmDestroy(Itinerary $itinerary){
+        $this->authorize('isOwner', $itinerary);
+        return view('itinerary.confirmDelete')->with('itinerary', $itinerary);
     }
 
     public function search()
@@ -114,7 +126,7 @@ class ItineraryController extends Controller
         $group = $request->input('filter');
 
         if (isset($query_string) === false && isset($group) == false)
-            return '404';
+            return 'errore 404';
         if ($query_string == '') {
             $results = Itinerary::where('visibility', 'public')->orderBy('created_at', 'desc')->get();
             return view('search.searchResults')
@@ -130,6 +142,7 @@ class ItineraryController extends Controller
             }
             
             $query = Itinerary::query();
+            $query->where('visibility', 'public');
 
             if ($group === 'title') {
                 $query->where('title', 'like', '%' . $query_string . '%');
@@ -146,9 +159,8 @@ class ItineraryController extends Controller
         }
     }
 
-    public function user_itineraries(Request $request){
-        $user_id = auth()->user()->id;
-        $itineraries = Itinerary::where('user_id', $user_id)->orderBy('created_at', 'desc')->get();
+    public function user_itineraries(){
+        $itineraries = Itinerary::where('user_id', auth()->id())->orderBy('created_at', 'desc')->get();
         return view('itinerary.userItineraries')
         ->with('itineraries', $itineraries);
     }

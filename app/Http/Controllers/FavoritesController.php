@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\Visibility;
 use App\Models\Favorites;
 use App\Models\Itinerary;
 use App\Models\User;
@@ -18,7 +19,7 @@ class FavoritesController extends Controller
         $favouriteIds = Favorites::where('user_id', auth()->id())->pluck('itinerary_id');
         $itineraries = Itinerary::whereIn('id', $favouriteIds)->get();
         return view('itinerary.userFavourites')
-        ->with('itineraries', $itineraries);
+            ->with('itineraries', $itineraries);
     }
 
     /**
@@ -26,23 +27,28 @@ class FavoritesController extends Controller
      */
     public function store(Request $request)
     {
-        Favorites::create([
-            'user_id' => auth()->id(),
-            'itinerary_id' => $request->itineraryId,
-        ]);
+        $itinerary = Itinerary::find($request->itineraryId);
+        if ($itinerary->visibility == Visibility::PUBLIC) {
+            Favorites::create([
+                'user_id' => auth()->id(),
+                'itinerary_id' => $itinerary->id,
+            ]);
 
-        return Redirect::to(route('itinerary.show', ['itinerary'=> $request->itineraryId]));
+            return Redirect::to(route('itinerary.show', ['itinerary' => $request->itineraryId]));
+        } else {
+            return 'errore, proibito';
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy($favourite)
-    {   
-        // soft delete, to be done with AJAX
+    {
         $to_delete = Favorites::find($favourite);
-        $to_delete->delete();
-        //return 'favourite' removed
-        return Redirect::to(route('home'));
+        if ($to_delete->user_id == auth()->id()) {
+            $to_delete->delete();
+            return Redirect::to(route('home'));
+        }
     }
 }

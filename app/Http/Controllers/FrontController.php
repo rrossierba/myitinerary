@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\DTO\Feature;
-use Illuminate\Http\Request;
 
 class FrontController extends Controller
 {
@@ -13,12 +12,9 @@ class FrontController extends Controller
             new Feature('Cerca itinerario', 'itinerary.search', 'search-itinerary.jpg'),
             new Feature('Crea il tuo itinerario', 'itinerary.create', 'create-itinerary.jpg'),
         ];
-        
-        $index = true;
 
         return view('index')
-        ->with('features', $features)
-        ->with('index', $index);
+        ->with('features', $features);
     }
 
     public function itineraryTest(){

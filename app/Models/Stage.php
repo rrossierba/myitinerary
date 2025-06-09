@@ -17,7 +17,6 @@ class Stage extends Model
         'description',
         'duration',
         'cost',
-        'photo',
         'itinerary_id',
     ];
 

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Favorites;
+use App\Models\Stage;
 use App\Models\User;
 use App\Models\City;
 use App\Models\Itinerary;
@@ -40,6 +41,6 @@ class DatabaseSeeder extends Seeder
         City::factory()->count(10)->create();
         Itinerary::factory()->count(100)->create();
         Favorites::factory()->count(10)->create();
-
+        Stage::factory()->count(300)->create();
     }
 }
