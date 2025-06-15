@@ -17,10 +17,13 @@ class FavoritesFactory extends Factory
      * @return array<string, mixed>
      */
     public function definition(): array
-    {
+    {   
+        $user_id = User::inRandomOrder()->first()?->id ?? User::factory();
         return [
-            'user_id' => User::inRandomOrder()->first()?->id ?? User::factory(),
-            'itinerary_id'=>Itinerary::inRandomOrder()->first()?->id ?? Itinerary::factory(),
+            'user_id' => $user_id,
+            'itinerary_id'=>Itinerary::where('visibility', 'public')
+            ->where('user_id', '!=', $user_id)
+            ->inRandomOrder()->first()?->id ?? Itinerary::factory(),
         ];
     }
 }

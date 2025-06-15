@@ -12,14 +12,11 @@ class City extends Model
 
     protected $table = 'cities';
 
-    protected $fillable = [
-        'name',
-    ];
+    protected $fillable = ['name', 'region', 'state'];
 
     public function itineraries()
     {
         return $this->hasMany(Itinerary::class, 'itinerary_id', 'id');
     }
-
 
 }

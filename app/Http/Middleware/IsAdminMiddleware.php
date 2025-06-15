@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class IsRegisteredUserMiddleware
+class IsAdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,8 +15,9 @@ class IsRegisteredUserMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ((!auth()->check())||(auth()->user()->role!='registered_user')) {
-            return response()->view('errors.accessDenied', ['message' => 'Only registered users can access this page!'], 403);
+        if ((!auth()->check())||(auth()->user()->role!='admin')) {
+            return response()->view('errors.accessDenied', 
+            ['message' => 'Only administrators can access this page!'], 403);
         }
         return $next($request);
     }

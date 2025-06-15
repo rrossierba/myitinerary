@@ -19,5 +19,5 @@ Tutti gli itinerari
 @endsection
 
 @section('before_results')
-<a href="{{ route('itinerary.search') }}" class="btn btn-success rounded-pill p-2 m-2"><i class="bi bi-arrow-left"></i> Ritorna alla ricerca</a>
+<a href="{{ route('search') }}" class="btn btn-success rounded-pill p-2 m-2"><i class="bi bi-arrow-left"></i> Ritorna alla ricerca</a>
 @endsection

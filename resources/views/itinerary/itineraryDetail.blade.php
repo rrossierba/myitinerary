@@ -62,12 +62,12 @@
             <div class="card" style="height:100%">
                 <div class="card-body">
                     <h5 class="mb-3">Dettagli itinerario</h5>
-                    <p><strong>Like:</strong> {{ $itinerary->favourites->count()}} ❤️ </p>
+                    <p><strong>Salvataggi:</strong> {{ $itinerary->favourites->count()}} <i class="text-danger bi bi-heart-fill"></i></p>
                     <p><strong>Creato da:</strong> {{ $itinerary->user->name}}</p>
                     <p><strong>Visibilità:</strong> {{ $itinerary->visibility }}</p>
 
                     @if (auth()->check())
-                        <hr>
+                        <hr></hr>
                         @if (auth()->user()->id == $itinerary->user->id)
                             <a href="{{ route('itinerary.edit', ['itinerary' => $itinerary->id]) }}" class="btn btn-primary w-100 mb-2">Edit</a>
                             <a href="{{ route('itinerary.destroy.confirm', ['itinerary'=>$itinerary]) }}" class="btn btn-danger w-100 mb-2">Elimina</a>

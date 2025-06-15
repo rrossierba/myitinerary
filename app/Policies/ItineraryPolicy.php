@@ -20,4 +20,9 @@ class ItineraryPolicy
     {
         return $user->id === $itinerary->user_id;
     }
+
+    public function isPublic(?User $user, Itinerary $itinerary): bool
+    {
+        return $itinerary->visibility===Visibility::PUBLIC;
+    }
 }

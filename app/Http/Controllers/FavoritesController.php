@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Enum\Visibility;
 use App\Models\Favorites;
 use App\Models\Itinerary;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -18,7 +17,7 @@ class FavoritesController extends Controller
     {
         $favouriteIds = Favorites::where('user_id', auth()->id())->pluck('itinerary_id');
         $itineraries = Itinerary::whereIn('id', $favouriteIds)->get();
-        return view('itinerary.userFavourites')
+        return view('itinerary.favourites')
             ->with('itineraries', $itineraries);
     }
 
@@ -27,28 +26,45 @@ class FavoritesController extends Controller
      */
     public function store(Request $request)
     {
-        $itinerary = Itinerary::find($request->itineraryId);
-        if ($itinerary->visibility == Visibility::PUBLIC) {
+        $request->validate([
+            'itinerary_id'=>['required']
+        ]);
+
+        $itinerary = Itinerary::find($request->get('itinerary_id'));
+
+        if($itinerary->visibility == Visibility::PUBLIC){
             Favorites::create([
                 'user_id' => auth()->id(),
                 'itinerary_id' => $itinerary->id,
             ]);
-
-            return Redirect::to(route('itinerary.show', ['itinerary' => $request->itineraryId]));
-        } else {
-            return 'errore, proibito';
+            $result = ['created'=>true];
         }
+        else
+            $result = ['created'=>false];
+        // return Redirect::to(route('itinerary.show', ['itinerary' => $request->itineraryId]));
+        return response()->json($result);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($favourite)
+    public function destroy(Request $request)
     {
-        $to_delete = Favorites::find($favourite);
-        if ($to_delete->user_id == auth()->id()) {
+        $request->validate([
+            'itinerary_id'=>['required', 'integer']
+        ]);
+
+        $to_delete = Favorites::where([
+            'itinerary_id'=>$request->get('itinerary_id'),
+            'user_id'=>auth()->id()
+        ])->get()->first();
+
+        if($to_delete!==null){
             $to_delete->delete();
-            return Redirect::to(route('home'));
-        }
+            $result = ['deleted'=>true];
+        }else
+            $result = ['deleted'=>false];
+
+        return response()->json($result);
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('cities', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('name');
+            $table->string('region');
+            $table->string('state');
             $table->timestamps();
+
+            $table->unique(['name', 'region', 'state']);
         });
 
         Schema::create('itinerary', function (Blueprint $table) {
@@ -31,11 +35,12 @@ return new class extends Migration
             $table->foreignId('itinerary_id')->constrained('itinerary')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
+
+            $table->unique(['itinerary_id', 'user_id']);
         });
 
         Schema::create('research', function (Blueprint $table) {
             $table->id();
-            $table->string('group');
             $table->string('query_string');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
@@ -45,7 +50,7 @@ return new class extends Migration
             $table->id();
             $table->string('location')->nullable(true);
             $table->string('description')->nullable(true);
-            $table->integer('duration')->nullable(true);
+            $table->integer('duration')->nullable(true)->default(0);
             $table->decimal('cost', 8, 2)->default(0.0);
             $table->foreignId('itinerary_id')->constrained('itinerary')->onDelete('cascade');
             $table->timestamps();

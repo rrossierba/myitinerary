@@ -2,43 +2,56 @@
 
 use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\ItineraryController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontController;
+use App\Http\Controllers\CityController;
 
 require __DIR__ . '/auth.php';
 
 Route::get('/', [FrontController::class, 'home'])->name('home');
 
+Route::get('/search/results', [SearchController::class, 'search_results'])->name('search.results');
+Route::get('/search', [SearchController::class, 'search'])->name('search');
+
+// AJAX
+Route::get('/API/cities/name', [CityController::class, 'search'])->name('api.city.name');
+Route::get('/API/regions/state', [CityController::class, 'searchRegion'])->name('api.regions.state');
+Route::get('/API/cities/regions', [CityController::class, 'searchCitiesByRegion'])->name('api.city.region');
+
 // itineraries
-Route::middleware('auth')->group(function () {
-    Route::get('/itinerary/user/created', [ItineraryController::class, 'user_itineraries'])->name('itinerary.user.created');
+Route::middleware(['auth', 'isRegisteredUser'])->group(function () {
+    // itineraries
     Route::get('/itinerary/{itinerary}/destroy/confirm', [ItineraryController::class, 'confirmDestroy'])->name('itinerary.destroy.confirm');
-});
-
-Route::get('/itinerary/search/results', [ItineraryController::class, 'search_results'])->name('itinerary.search.results');
-Route::get('/itinerary/search', [ItineraryController::class, 'search'])->name('itinerary.search');
-Route::resource('itinerary', ItineraryController::class); // quasi tutti auth
-
-// favourites/saved itineraries
-// all auth
-Route::middleware('auth')->group(function () {
+    Route::resource('itinerary', ItineraryController::class);
+    
+    // favourites
     Route::get('/favourites', [FavoritesController::class, 'index'])->name('favourites.index');
-    Route::post('/favourites/add', [FavoritesController::class, 'store'])->name('favourites.add');
-    Route::delete('/favourites/{favourite}/destroy', [FavoritesController::class, 'destroy'])->name('favourites.remove');
+    Route::post('/API/favourites/add', [FavoritesController::class, 'store'])->name('favourites.add');
+    Route::delete('/API/favourites/destroy', [FavoritesController::class, 'destroy'])->name('favourites.remove');
+
+    // stages
+    Route::get('/itinerary/{itinerary}/stage/new', [StageController::class, 'new'])->name('stage.new');
+    Route::get('/itinerary/{itinerary}/stage/add', [StageController::class, 'add'])->name('stage.add');
+    Route::get('/stage/{stage}/destroy/confirm', [StageController::class, 'destroyConfirm'])->name('stage.destroy.confirm');
+    Route::resource('stage', StageController::class);
 });
 
-// stages
-Route::middleware('auth')->group(function () {
-    Route::get('/itinerary/{itinerary}/stage/new', [StageController::class, 'create'])->name('stage.create');
-    Route::get('/itinerary/{itinerary}/stage/add', [StageController::class, 'add'])->name('stage.add');
-    Route::post('/stage/store', [StageController::class, 'store'])->name('stage.store');
-    Route::get('/stage/{stage}/edit', [StageController::class, 'edit'])->name('stage.edit');
-    Route::put('/stage/{stage}/update', [StageController::class, 'update'])->name('stage.update');
-    Route::delete('/stage/{stage}/destroy', [StageController::class, 'destroy'])->name('stage.destroy');
-    Route::get('/stage/{stage}/destroy/confirm', [StageController::class, 'destroyConfirm'])->name('stage.destroy.confirm');
+Route::middleware(['auth', 'isAdmin'])->group(function () {
+    Route::get('/admin', function(){
+        return 'admin page';
+    });
+    Route::get('city/{city}/destroy/confirm', [CityController::class, 'destroyConfirm'])->name('city.destroy.confirm');
+    Route::resource('city', CityController::class);
+    Route::get('API/city/exist', [CityController::class, 'exist'])->name('api.city.exist');
 });
+
+Route::middleware('auth')->group(function () {
+    Route::get('API/city/exist', [CityController::class, 'exist'])->name('api.city.exist');
+});
+
+
 
 
 // Route::middleware(['auth'])->group(function () {

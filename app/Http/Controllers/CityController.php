@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\City;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class CityController extends Controller
 {
@@ -12,7 +13,9 @@ class CityController extends Controller
      */
     public function index()
     {
-        //
+        $states = City::pluck('state')->unique();
+        return view('city.cities')
+        ->with('states', $states);
     }
 
     /**
@@ -20,7 +23,7 @@ class CityController extends Controller
      */
     public function create()
     {
-        //
+        return view('city.editCity');
     }
 
     /**
@@ -28,7 +31,19 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'inputName'=>['required', 'string', 'max:255'],
+            'inputRegion'=>['required', 'string', 'max:255'],
+            'inputState'=>['required', 'string', 'max:255'],
+        ]);
+
+        City::create([
+            'name'=>$request->input('inputName'),
+            'region'=>$request->input('inputRegion'),
+            'state'=>$request->input('inputState')
+        ]);
+
+        return Redirect::to(route('city.index'));
     }
 
     /**
@@ -44,7 +59,7 @@ class CityController extends Controller
      */
     public function edit(City $city)
     {
-        //
+        return view('city.editCity')->with('city', $city);
     }
 
     /**
@@ -52,7 +67,19 @@ class CityController extends Controller
      */
     public function update(Request $request, City $city)
     {
-        //
+        $request->validate([
+            'inputName'=>['required', 'string', 'max:255'],
+            'inputRegion'=>['required', 'string', 'max:255'],
+            'inputState'=>['required', 'string', 'max:255'],
+        ]);
+
+        $city->update([
+            'name'=>$request->input('inputName'),
+            'region'=>$request->input('inputRegion'),
+            'state'=>$request->input('inputState')
+        ]);
+
+        return Redirect::to(route('city.index'));
     }
 
     /**
@@ -60,6 +87,64 @@ class CityController extends Controller
      */
     public function destroy(City $city)
     {
-        //
+        $city->delete();
+        return Redirect::to(route('city.index'));
+    }
+
+    public function destroyConfirm(City $city){
+        return view('city.deleteCity')->with('city', $city);
+    }
+
+    //AJAX
+    public function search(Request $request)
+    {
+        $query = $request->get('q');
+
+        $cities = City::where('name', 'like', $query . '%')
+            ->limit(10)
+            ->get(['name', 'region', 'state']);
+
+        return response()->json($cities);
+    }
+
+    public function searchRegion(Request $request){
+        $state = $request->get('state');
+        $regions = City::where('state', $state)->orderBy('region', 'asc')->pluck('region')->unique()->values();
+        return response()->json($regions);
+    }
+
+    public function searchCitiesByRegion(Request $request){
+        $state = $request->get('state');
+        $region = $request->get('region');
+
+        $cities = City::where([
+            'state'=>$state,
+            'region'=>$region
+        ])->get(['name', 'region', 'state', 'id']);
+        
+        return response()->json(data: $cities);
+    }
+
+    public function exist(Request $request){
+
+        if($request->get('cityString')!== null){
+            if (preg_match('/^([\p{L}\s]+) \(([\p{L}\s]+), ([\p{L}\s]+)\)$/u', $request->get('cityString'), $matches)) {
+                $name = trim($matches[1]);  
+                $region = trim($matches[2]);    
+                $state = trim($matches[3]);      
+            }else{
+                return response()->json(['error'=>'city pattern not matching']);
+            }
+        }else{
+            $state = $request->get('state');
+            $region = $request->get('region');
+            $name = $request->get('name');
+        }
+
+        return response()->json(['exist'=>City::where([
+            'state'=>$state,
+            'region'=>$region,
+            'name'=>$name
+        ])->exists()]);
     }
 }

@@ -7,30 +7,50 @@
 @endsection
 
 @section('body')
-    <div class="row">
-        <p>
-            Benvenuto in MyItinerary, l'applicazione per gestire gli itinerari dei tuoi viaggi e per scoprire nuovi
-            itinerari. <br>
-            Scopri ora cosa puoi fare!
-        </p>
-        <p>
-            Crea gli itinerari dei tuoi viaggi con le loro foto. Condividili o conservali per te!
-        </p>
+    <div class="hero-content">
+        <p class="lead">Benvenuto in MyItinerary, l'applicazione per gestire gli itinerari dei tuoi viaggi e per scoprire
+            nuovi itinerari.</p>
+        <p class="fs-5">Scopri ora cosa puoi fare!</p>
     </div>
 
-    <!-- option cards -->
-    <div class="row g-4">
-        @foreach ($features as $feature)
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="card mx-auto home-card" style="width: 90%;">
-                    <a class="link-underline-opacity-0 link-dark" href="{{ route($feature->getRoute()) }}">
-                        <img src="img/{{ $feature->getImgName() }}" class="card-img-top" alt="...">
-                        <div class="card-body d-flex justify-content-center">
-                            <h4 class="card-text">{{ $feature->getName() }}</h4>
-                        </div>
-                    </a>
+    <section class="py-5 text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="border rounded-2 p-2">
+                        <a href="{{ route('search') }}" class="link-underline link-underline-opacity-0 link-dark">
+                            <div class="feature-icon">
+                                <i class="bi bi-search"></i>
+                            </div>
+                            <h4>Cerca itinerari</h4>
+                            <p>Trova nuovi itinerari in base ai tuoi interessi</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="border rounded-2 p-2">
+                        <a href="{{ route('itinerary.create') }}" class="link-underline link-underline-opacity-0 link-dark">
+                            <div class="feature-icon">
+                                <i class="bi bi-map"></i>
+                            </div>
+                            <h4>Crea itinerari</h4>
+                            <p>Crea gli itinerari di tuoi viaggi personalizzati</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="border rounded-2 p-2">
+                        <a href="{{ route('itinerary.index') }}" class="link-underline link-underline-opacity-0 link-dark">
+                            <div class="feature-icon">
+                                <i class="bi bi-share"></i>
+                            </div>
+                            <h4>Condividi e conserva</h4>
+                            <p>Condividi foto e itinerari dei tuoi viaggi</p>
+                        </a>
+                    </div>
                 </div>
             </div>
-        @endforeach
-    </div>
+        </div>
+    </section>
+
 @endsection

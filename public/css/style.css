@@ -76,3 +76,49 @@
     /* altezza fissa dell'immagine */
     object-fit: cover;
 }
+
+#citySuggestions li,
+.clickable {
+    cursor: pointer;
+}
+
+body, html {
+    height: 100%;
+    overflow: hidden;
+  }
+
+.main-container {
+    height: calc(100vh - 90px); /* altezza totale meno navbar (56px per navbar Bootstrap default) */
+    overflow-y: auto;
+  }
+
+.main-content{
+    max-width: 90%;
+    margin-left: 5%;
+}
+
+.hero-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 15px;
+}
+
+.feature-icon {
+    font-size: 40px;
+    color: #0d6efd;
+    margin-bottom: 15px;
+}
+
+.invalidInput{
+    color: #bd2626;
+    font-weight: bold;
+}
+
+.invalidFocus:focus{
+    border-color: #bd2626;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
+}
