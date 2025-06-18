@@ -82,20 +82,20 @@
     cursor: pointer;
 }
 
-body, html {
+/* body, html {
     height: 100%;
     overflow: hidden;
   }
 
 .main-container {
-    height: calc(100vh - 90px); /* altezza totale meno navbar (56px per navbar Bootstrap default) */
+    height: calc(100vh - 90px);
     overflow-y: auto;
   }
 
 .main-content{
     max-width: 90%;
     margin-left: 5%;
-}
+} */
 
 .hero-content {
     height: 100%;
@@ -121,4 +121,26 @@ body, html {
 .invalidFocus:focus{
     border-color: #bd2626;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
+}
+
+.bg-error{
+    /* background-color:#bd2626; */
+    color: #bd2626;
+}
+
+.page-link{
+    text-decoration: none;
+    color: rgb(103,103,103);
+}
+
+.page-link:hover{
+    color: rgb(103,103,103);
+    background-color: rgb(240,240,240);
+}
+
+.page-item.active>span,
+.page-item.active>a{
+    color: rgb(103,103,103);
+    background-color: rgb(180,180,180);
+    border-color: rgb(180,180,180);
 }

@@ -22,6 +22,7 @@
 @section('scripts')
     <script>
         $(document).ready(function () {
+            const formatErrorMessage = 'Formato errato. Valori accettati: lettere, apostrofi, trattini, punti';
             var fields = [
                 {
                     input: $('input[name=inputState]'),
@@ -66,11 +67,20 @@
                     if (!error && inputValue.trim() === "") {
                         error = true;
                         $(field.errorId).text(field.errorMessage);
+                        $(field.errorId).show();
                         field.input.addClass('invalidFocus');
                         field.input.focus();
-                    } else {
+                    } else if(!error && !inputValue.trim().match(/^[A-Za-zÀ-ÖØ-öø-ÿ'’.\- ]+$/)){
+                        error = true;
+                        $(field.errorId).text(formatErrorMessage);
+                        $(field.errorId).show();
+                        field.input.addClass('invalidFocus');
+                        field.input.focus();
+                    } 
+                    else {
                         field.input.removeClass('invalidFocus');
                         $(field.errorId).empty();
+                        $(field.errorId).hide()
                     }
                 }
                 if (!error) {
@@ -139,47 +149,49 @@
             </div>
 
             <!-- stato -->
-            <div class="row mb-3">
-                <div class="col-lg-2 col-md-3 col-sm-12">
-                    <label for="inputState" class="col-form-label">Inserisci stato</label>
-                </div>
-                <div class="col-lg-10 col-md-9 col-sm-12">
-                    @if (isset($city))
-                        <input type="text" id="inputState" name="inputState" value="{{ $city->state }}" class="form-control">
-                    @else
-                        <input type="text" id="inputState" name="inputState" placeholder="Stato" class="form-control">
-                    @endif
-                    <span class="invalidInput" id="invalidState"></span>
+            <div class="row mb-3 justify-content-center">
+                <div class="col-12">
+                    <div class="form-floating">
+                        @if (isset($city))
+                            <input type="text" id="inputState" name="inputState" value="{{ $city->state }}"
+                                class="form-control">
+                        @else
+                            <input type="text" id="inputState" name="inputState" placeholder="Stato" class="form-control">
+                        @endif
+                        <label for="inputState" class="col-form-label">Stato</label>
+                        <div class="alert alert-danger" id="invalidState" style="display: none"></div>
+                    </div>
                 </div>
             </div>
 
             <!-- regione -->
-            <div class="row mb-3">
-                <div class="col-lg-2 col-md-3 col-sm-12">
-                    <label for="inputRegion" class="col-form-label">Inserisci regione</label>
-                </div>
-                <div class="col-lg-10 col-md-9 col-sm-12">
-                    @if (isset($city))
-                        <input type="text" id="inputRegion" name="inputRegion" value="{{ $city->region }}" class="form-control">
-                    @else
-                        <input type="text" id="inputRegion" name="inputRegion" placeholder="Regione" class="form-control">
-                    @endif
-                    <span class="invalidInput" id="invalidRegion"></span>
+            <div class="row mb-3 justify-content-center">
+                <div class="col-12">
+                    <div class="form-floating">
+                        @if (isset($city))
+                            <input type="text" id="inputRegion" name="inputRegion" value="{{ $city->region }}"
+                                class="form-control">
+                        @else
+                            <input type="text" id="inputRegion" name="inputRegion" placeholder="Regione" class="form-control">
+                        @endif
+                        <label for="inputRegion" class="col-form-label">Regione</label>
+                        <div class="alert alert-danger" id="invalidRegion" style="display: none"></div>
+                    </div>
                 </div>
             </div>
 
             <!-- nome -->
-            <div class="row mb-3">
-                <div class="col-lg-2 col-md-3 col-sm-12">
-                    <label for="inputName" class="col-form-label">Inserisci nome</label>
-                </div>
-                <div class="col-lg-10 col-md-9 col-sm-12">
-                    @if (isset($city))
-                        <input type="text" id="inputName" name="inputName" value="{{ $city->name }}" class="form-control">
-                    @else
-                        <input type="text" id="inputName" name="inputName" placeholder="Nome" class="form-control">
-                    @endif
-                    <span class="invalidInput" id="invalidName"></span>
+            <div class="row mb-3 justify-content-center">
+                <div class="col-12">
+                    <div class="form-floating">
+                        @if (isset($city))
+                            <input type="text" id="inputName" name="inputName" value="{{ $city->name }}" class="form-control">
+                        @else
+                            <input type="text" id="inputName" name="inputName" placeholder="Nome" class="form-control">
+                        @endif
+                        <label for="inputName" class="col-form-label">Nome</label>
+                        <div class="alert alert-danger" id="invalidName" style="display: none"></div>
+                    </div>
                 </div>
             </div>
         </form>

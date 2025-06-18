@@ -23,10 +23,19 @@
         $(document).ready(function () {
             // visualizzazione dinamica bottone modifica
             @if (isset($itinerary))
-                var fields = ['input[name=inputTitle]', 'input[name=citySelector]'];
-                var initialValues = fields.map((field) => $(field).val().trim());
+                const fields = [
+                    'input[name=inputTitle]',
+                    'input[name=citySelector]',
+                    'select[name=visibility]' // aggiunta della select
+                ];
+
+                const initialValues = fields.map((field) => $(field).val().trim());
+
                 fields.forEach((field, index) => {
-                    $(field).on('input', function () {
+                    const $el = $(field);
+                    const eventType = $el.is('select') ? 'change' : 'input';
+
+                    $el.on(eventType, function () {
                         let changed = false;
                         for (let i = 0; i < fields.length; i++) {
                             if ($(fields[i]).val().trim() !== initialValues[i]) {
@@ -37,10 +46,14 @@
                         $('#submitButton').toggle(changed);
                     });
                 });
+
+
             @endif
 
             // autocompletamento delle città
             $('input[name=citySelector]').on('input', function () {
+                $('#invalidCity').hide();
+                
                 const query = $(this).val();
 
                 if (query.length < 2) {
@@ -56,8 +69,8 @@
                         data.forEach(city => {
                             $('#citySuggestions').append(
                                 `<li class="list-group-item list-group-item-action"> 
-                                            ${city.name} (${city.region}, ${city.state})
-                                            </li>`
+                                                                ${city.name} (${city.region}, ${city.state})
+                                                                </li>`
                             );
                         });
                     }
@@ -84,28 +97,33 @@
                 if ($('input[name=inputTitle]').val().trim() === '') {
                     error = true;
                     $('#invalidTitle').text('Il titolo è obbligatorio');
+                    $('#invalidTitle').show();
                     $('input[name=inputTitle]').addClass('invalidFocus');
                     $('input[name=inputTitle]').focus();
                 } else {
                     $('input[name=inputTitle]').removeClass('invalidFocus');
                     $('#invalidTitle').empty();
+                    $('#invalidTitle').hide()
                 }
 
                 // controllo su città
                 if (!error && $('input[name=citySelector]').val().trim() === '') {
                     error = true;
                     $('#invalidCity').text('La città è obbligatoria');
+                    $('#invalidCity').show();
                     $('input[name=citySelector]').addClass('invalidFocus');
                     $('input[name=citySelector]').focus();
                 } else if (!error && !$('input[name=citySelector]').val().trim().match(/^(.+?) \((.+?), (.+?)\)$/)) {
                     error = true;
                     $('#invalidCity').text('Forma errata: Nome (Regione, Stato)');
+                    $('#invalidCity').show();
                     $('input[name=citySelector]').addClass('invalidFocus');
                     $('input[name=citySelector]').focus();
                 }
                 else {
                     $('input[name=citySelector]').removeClass('invalidFocus');
                     $('#invalidCity').empty();
+                    $('#invalidCity').hide();
                 }
 
                 if (!error) {
@@ -173,71 +191,64 @@
                 </div>
                 <div class="col-lg-2 col-md-4 col-6">
                     @if (isset($itinerary))
-                        <a href="{{ url()->previous() }}" class="btn btn-danger w-100"><i class="bi bi-x-lg"></i> Annulla</a>
+                        <a href="{{ route('itinerary.index') }}" class="btn btn-danger w-100"><i class="bi bi-x-lg"></i>
+                            Annulla</a>
                     @else
-                        <a href="{{ url()->previous() }}" class="btn btn-danger w-100"><i class="bi bi-x-lg"></i> Annulla</a>
+                        <a href="{{ route('home') }}" class="btn btn-danger w-100"><i class="bi bi-x-lg"></i> Annulla</a>
                     @endif
                 </div>
             </div>
 
             <!-- titolo -->
             <div class="row mb-3">
-                <div class="col-lg-2 col-md-3 col-sm-12">
-                    <label for="inputTitle" class="col-form-label">Inserisci titolo</label>
-                </div>
-                <div class="col-lg-10 col-md-9 col-sm-12">
-                    @if (isset($itinerary))
-                        <input type="text" id="inputTitle" name="inputTitle" value="{{ $itinerary->title }}"
-                            class="form-control">
-                    @else
-                        <input type="text" id="inputTitle" name="inputTitle" placeholder="Titolo" class="form-control">
-                    @endif
-                    <span class="invalidInput" id="invalidTitle"></span>
+                <div class="col-12">
+                    <div class="form-floating">
+                        @if (isset($itinerary))
+                            <input type="text" id="inputTitle" name="inputTitle" value="{{ $itinerary->title }}"
+                                class="form-control" placeholder="Titolo">
+                        @else
+                            <input type="text" id="inputTitle" name="inputTitle" placeholder="Titolo" class="form-control">
+                        @endif
+                        <label for="inputTitle" class="col-form-label">Titolo</label>
+                        <!-- <span class="invalidInput" id="invalidTitle"></span> -->
+                        <div class="alert alert-danger" id="invalidTitle" style="display: none;"></div>
+                    </div>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <!-- città -->
-                <div class="col-lg-2 col-md-3 col-12">
-                    <label for="inserCity" class="form-label">Seleziona la Città</label>
-                </div>
-                <div class="col-lg-4 col-md-9 col-12 position-relative">
-                    @if (isset($itinerary))
-                        <input type="text" class="form-control w-100" autocomplete="off" name="citySelector"
-                            placeholder="Inserisci una città" id="cityInput"
-                            value="{{ $itinerary->city->name }} ({{ $itinerary->city->region }}, {{ $itinerary->city->state }})">
-                    @else
-                        <input type="text" class="form-control w-100" id="cityInput" autocomplete="off" name="citySelector"
-                            placeholder="Inserisci una città">
-                    @endif
-                    <span class="invalidInput" id="invalidCity"></span>
+                <div class="col-lg-6 col-12">
+                    <div class="form-floating mt-1">
+                        @if (isset($itinerary))
+                            <input type="text" class="form-control w-100" autocomplete="off" name="citySelector"
+                                placeholder="Inserisci una città" id="cityInput"
+                                value="{{ $itinerary->city->name }} ({{ $itinerary->city->region }}, {{ $itinerary->city->state }})">
+                        @else
+                            <input type="text" class="form-control w-100" id="cityInput" autocomplete="off" name="citySelector"
+                                placeholder="Inserisci una città">
+                        @endif
+                        <label for="inserCity" class="form-label">Seleziona la Città</label>
+                        <!-- <span class="invalidInput" id="invalidCity"></span> -->
+                        <div class="alert alert-danger" id="invalidCity" style="display: none;"></div>
+                    </div>
                     <ul id="citySuggestions" class="list-group position-absolute" style="z-index: 1000;"></ul>
                 </div>
 
                 <!-- visibilità -->
-                <div class="col-lg-1 col-md-2 col-6">
-                    <label>Visibilità</label>
-                </div>
-                <div class="col-lg-3 col-md-4 col-6">
-                    @if (isset($itinerary))
-                        @if ($itinerary->visibility->value == 'public')
-                            <input type="radio" class="btn-check" name="visibilitaRadio" id="radioPublic" value="public" checked>
-                            <label class="btn btn-light rounded-pill" for="radioPublic">Pubblica</label>
-                            <input type="radio" class="btn-check" name="visibilitaRadio" id="radioPrivate" value="private">
-                            <label class="btn btn-light rounded-pill" for="radioPrivate">Privata</label>
-                        @elseif ($itinerary->visibility->value == 'private')
-                            <input type="radio" class="btn-check" name="visibilitaRadio" id="radioPublic" value="public">
-                            <label class="btn btn-light rounded-pill" for="radioPublic">Pubblica</label>
-                            <input type="radio" class="btn-check" name="visibilitaRadio" id="radioPrivate" value="private" checked>
-                            <label class="btn btn-light rounded-pill" for="radioPrivate">Privata</label>
-                        @endif
-                    @else
-                        <input type="radio" class="btn-check" name="visibilitaRadio" id="radioPublic" value="public" checked>
-                        <label class="btn btn-light rounded-pill" for="radioPublic">Pubblica</label>
-
-                        <input type="radio" class="btn-check" name="visibilitaRadio" id="radioPrivate" value="private">
-                        <label class="btn btn-light rounded-pill" for="radioPrivate">Privata</label>
-                    @endif
+                <div class="col-md-6 col-12">
+                    <div class="form-floating">
+                        @php
+                            $selected = isset($itinerary) ? $itinerary->visibility->value : 'public';
+                        @endphp
+                        <div class="mb-3">
+                            <label for="visibilitaSelect">Visibilità</label>
+                            <select class="form-control h-100" id="visibilitaSelect" name="visibility" required>
+                                <option value="public" {{ $selected === 'public' ? 'selected' : '' }}>Pubblica</option>
+                                <option value="private" {{ $selected === 'private' ? 'selected' : '' }}>Privata</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
@@ -273,7 +284,7 @@
             @endif
             <div class="row justify-content-center mt-2">
                 <div class="col-6">
-                    <a href="{{ route('stage.add', ['itinerary' => $itinerary]) }}" class="btn btn-primary w-100"><i
+                    <a href="{{ route('stage.create', ['itinerary' => $itinerary]) }}" class="btn btn-primary w-100"><i
                             class="bi bi-plus"></i> Aggiungi tappa</a>
                 </div>
             </div>

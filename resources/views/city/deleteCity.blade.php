@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Elimina itinerario')
+@section('title', 'Elimina Città')
 
 @section('breadcrumb')
     <li class="breadcrumb-item">Home</li>

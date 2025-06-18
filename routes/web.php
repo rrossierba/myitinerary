@@ -12,8 +12,9 @@ require __DIR__ . '/auth.php';
 
 Route::get('/', [FrontController::class, 'home'])->name('home');
 
-Route::get('/search/results', [SearchController::class, 'search_results'])->name('search.results');
-Route::get('/search', [SearchController::class, 'search'])->name('search');
+Route::get('/search', [SearchController::class, 'searchIndex'])->name('search');
+Route::post('/search', [SearchController::class, 'search'])->name('search.store');
+Route::get('/search/results/{query}', [SearchController::class, 'search_results'])->name('search.results');
 
 // AJAX
 Route::get('/API/cities/name', [CityController::class, 'search'])->name('api.city.name');
@@ -32,10 +33,12 @@ Route::middleware(['auth', 'isRegisteredUser'])->group(function () {
     Route::delete('/API/favourites/destroy', [FavoritesController::class, 'destroy'])->name('favourites.remove');
 
     // stages
-    Route::get('/itinerary/{itinerary}/stage/new', [StageController::class, 'new'])->name('stage.new');
-    Route::get('/itinerary/{itinerary}/stage/add', [StageController::class, 'add'])->name('stage.add');
     Route::get('/stage/{stage}/destroy/confirm', [StageController::class, 'destroyConfirm'])->name('stage.destroy.confirm');
-    Route::resource('stage', StageController::class);
+    Route::prefix('itinerary/{itinerary}')->group(function () {
+        Route::get('stage/create', [StageController::class, 'create'])->name('stage.create');
+        Route::post('stage', [StageController::class, 'store'])->name('stage.store');
+    });    
+    Route::resource('stage', StageController::class)->except(['create', 'store']);
 });
 
 Route::middleware(['auth', 'isAdmin'])->group(function () {
@@ -43,16 +46,12 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
         return 'admin page';
     });
     Route::get('city/{city}/destroy/confirm', [CityController::class, 'destroyConfirm'])->name('city.destroy.confirm');
-    Route::resource('city', CityController::class);
-    Route::get('API/city/exist', [CityController::class, 'exist'])->name('api.city.exist');
+    Route::resource('city', CityController::class)->except('show');
 });
 
 Route::middleware('auth')->group(function () {
     Route::get('API/city/exist', [CityController::class, 'exist'])->name('api.city.exist');
 });
-
-
-
 
 // Route::middleware(['auth'])->group(function () {
 // });

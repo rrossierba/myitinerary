@@ -10,18 +10,17 @@
     <link rel="stylesheet" href="{{ url('/') }}/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link href="{{ url('/') }}/css/style.css" rel="stylesheet">
+    @yield('styles')
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="{{ url('/') }}/bootstrap/js/bootstrap.min.js"></script>
-
+    @yield('scripts')
 </head>
 
 <body>
-    @yield('scripts')
-
-    <div class="bg-white border-bottom fixed-top" style="height: 90px;">
+    <div class="bg-white border-bottom">
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid text-center">
 
@@ -43,7 +42,7 @@
                             <a class="btn nav-link" aria-current="page" href="{{ route('home') }}">Home</a>
                         </li>
                         <li class="nav-item ms-1">
-                            <a class="btn nav-link" aria-current="page" href="{{ route('search.results') }}">Cerca
+                            <a class="btn nav-link" aria-current="page" href="{{ route('search') }}">Cerca
                                 Itinerario</a>
                         </li>
                         @if (auth()->check())
@@ -87,11 +86,11 @@
                                     <i class="bi bi-person-circle"></i>
                                     {{ auth()->user()->name }}
                                     @if (auth()->user()->role === 'admin')
-                                    (Amministratore)
+                                        (Amministratore)
                                     @endif
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end text-center">
-                                    <li><a class="dropdown-item p-2" href=""><i class="bi bi-person-gear"></i> Gestisci</a>
+                                    <li><a class="dropdown-item p-2" href="{{ route('user.panel') }}"><i class="bi bi-person-gear"></i> Gestisci</a>
                                     </li>
                                     <li>
                                         <label for="logoutSubmit" class="dropdown-item p-2"><i
@@ -107,14 +106,7 @@
                             </li>
                         @else
                             <li>
-                                @if(isset($login) && $login == true)
-                                    <a href="{{route('register')}}" class="btn btn-success"><i class="bi bi-person-circle"></i>
-                                        Register</a>
-                                @elseif(isset($register) && $register == true)
-                                    <a href="{{route('login')}}" class="btn btn-primary m-e2"><i
-                                            class="bi bi-person-circle"></i>
-                                        Login</a>
-                                @else
+                                @if(!isset($login))
                                     <a href="{{route('login')}}" class="btn btn-primary m-e2"><i
                                             class="bi bi-person-circle"></i>
                                         Login</a>
@@ -136,17 +128,17 @@
         </nav>
     </div>
 
-    <div class="main-container" style="margin-top: 90px;">
-        <div class="container">
-            <div class="row">
-                <h1 class="text-center">
-                    @yield('title')
-                </h1>
-            </div>
+    <div class="container">
+
+        <!-- titolo -->
+        <div class="row">
+            <h1 class="text-center">
+                @yield('title')
+            </h1>
         </div>
 
         <!-- body -->
-        <div class="container-fluid mb-5 main-content">
+        <div class="container mb-5">
             @yield('body')
         </div>
 

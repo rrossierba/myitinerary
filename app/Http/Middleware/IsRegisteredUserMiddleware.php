@@ -16,7 +16,7 @@ class IsRegisteredUserMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if ((!auth()->check())||(auth()->user()->role!='registered_user')) {
-            return response()->view('errors.accessDenied', ['message' => 'Only registered users can access this page!'], 403);
+            return response()->view('errors.403', ['message' => 'Solo gli utenti registrati possono accedere a questa pagina!'], 403);
         }
         return $next($request);
     }

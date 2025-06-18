@@ -1,105 +1,29 @@
 @extends('layouts.master')
 
-@section('body')
+@section('scripts')
+    <script>
+        $(document).ready(function () {
+            @if (auth()->check())
 
-    @yield('before_results')
-
-    @foreach ($itineraries as $itinerary)
-        <div class="card mb-2 shadow-sm rounded p-3 mb-3">
-            <div class="card-body">
-                <div class="row g-2">
-                    <div class="col-lg-10 col-8">
-                        <h5 class="card-title">
-                            <a href="{{ route('itinerary.show', ['itinerary' => $itinerary]) }}"
-                                class="link-underline-opacity-0 link-dark">{{ $itinerary->title }}</a>
-                        </h5>
-                    </div>
-                    <div class="col-lg-2 col-4">
-                        @if (auth()->check())
-                            @if(auth()->user()->can('isOwner', $itinerary))
-                                <a href="{{ route('itinerary.edit', ['itinerary' => $itinerary]) }}"
-                                    class="btn btn-outline-secondary w-100 mb-2">
-                                    <i class="bi bi-pencil"></i>
-                                    Edit
-                                </a>
-                            @else
-                                @if ($itinerary->isFavouriteByUser(auth()->id()))
-                                    <button class="btn btn-secondary w-100 mb-2 saved" itineraryid="{{ $itinerary->id }}">
-                                        <i class="bi bi-check-lg"></i>
-                                        Salvato
-                                    </button>
-                                @else
-                                    <button class="btn btn-outline-secondary w-100 mb-2 toSave" itineraryid="{{ $itinerary->id }}">
-                                        <i class="bi bi-bookmark"></i>
-                                        Salva
-                                    </button>
-                                @endif
-                            @endif
-                        @endif
-                    </div>
-                </div>
-
-                <div class="row g-2">
-                    <div class="col-lg-10 col-8">
-                        <div class="badge bg-secondary fs-6 mb-2">
-                            <i class="bi bi-globe-europe-africa"></i>
-                            {{ $itinerary->city->name }}
-                        </div>
-                        <div class="badge bg-primary fs-6 mb-2">
-                            <i class="bi bi-currency-euro"></i>
-                            {{ number_format($itinerary->stages->sum('cost'), 2, ',', '.') }}
-                        </div>
-                        <div class="badge bg-success fs-6 mb-2">
-                            <i class="bi bi-person-fill"></i>
-                            {{ $itinerary->user->name }}
-                        </div>
-                        <div class="badge bg-light fs-6 mb-2 text-dark">
-                            <i class="bi bi-eye"></i>
-                            {{ $itinerary->visibility }}
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 col-4">
-                        <div class="badge bg-danger fs-6 mb-2 w-100">
-                            <i class="bi bi-heart-fill"></i>
-                            <span id="favourite{{ $itinerary->id }}">
-                                {{ $itinerary->favourites->count() }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endforeach
-
-    @yield('after_results')
-
-    @if (auth()->check())
-        <script>
-            $(document).ready(function () {
-
-                // Funzione per gestire la rimozione dei preferiti
+                // rimozione dei preferiti
                 function handleRemoveSaved(buttonElement) {
                     const itinerary_id = buttonElement.attr('itineraryid');
-                    console.log('Tentativo di rimozione preferito per ID:', itinerary_id);
 
                     $.ajax({
                         url: '{{ route('favourites.remove') }}',
-                        method: 'DELETE', // O il metodo HTTP corretto che accetta Laravel per la rimozione
+                        method: 'DELETE',
                         data: {
                             itinerary_id: itinerary_id,
-                            _token: '{{ csrf_token() }}' // Aggiungi il token CSRF per le richieste POST
+                            _token: '{{ csrf_token() }}'
                         },
                         success: function (data) {
-                            if (data.deleted === true) { // Usa === per confronto stretto
-                                console.log('Preferito rimosso con successo:', data);
+                            if (data.deleted === true) {
                                 buttonElement.html(`<i class="bi bi-bookmark"></i> Salva`);
                                 buttonElement.removeClass('btn-secondary saved');
                                 buttonElement.addClass('btn-outline-secondary toSave');
 
-                                // Rimuovi l'handler di 'removeSaved' e aggiungi quello di 'addSaved'
-                                buttonElement.off('click'); // Rimuovi tutti gli handler precedenti per questo elemento
-                                buttonElement.on('click', function () { // Aggiungi il nuovo handler
+                                buttonElement.off('click');
+                                buttonElement.on('click', function () {
                                     handleAddSaved($(this));
                                 });
 
@@ -113,33 +37,31 @@
                         },
                         error: function (xhr, status, error) {
                             console.error('Errore Ajax nella rimozione:', error);
-                            // Gestisci l'errore lato utente
                         }
                     });
                 }
 
-                // Funzione per gestire l'aggiunta ai preferiti
+                // aggiunta ai preferiti
                 function handleAddSaved(buttonElement) {
                     const itinerary_id = buttonElement.attr('itineraryid');
                     console.log('Tentativo di aggiunta preferito per ID:', itinerary_id);
 
                     $.ajax({
                         url: '{{ route('favourites.add') }}',
-                        method: 'POST', // O il metodo HTTP corretto che accetta Laravel per l'aggiunta
+                        method: 'POST',
                         data: {
                             itinerary_id: itinerary_id,
-                            _token: '{{ csrf_token() }}' // Aggiungi il token CSRF per le richieste POST
+                            _token: '{{ csrf_token() }}'
                         },
                         success: function (data) {
-                            if (data.created === true) { // Usa === per confronto stretto
+                            if (data.created === true) {
                                 console.log('Preferito aggiunto con successo:', data);
-                                buttonElement.html(`<i class="bi bi-check-lg"></i> Salvato`); // Icona di "salvato"
+                                buttonElement.html(`<i class="bi bi-check-lg"></i> Salvato`);
                                 buttonElement.removeClass('btn-outline-secondary toSave');
                                 buttonElement.addClass('btn-secondary saved');
 
-                                // Rimuovi l'handler di 'addSaved' e aggiungi quello di 'removeSaved'
-                                buttonElement.off('click'); // Rimuovi tutti gli handler precedenti
-                                buttonElement.on('click', function () { // Aggiungi il nuovo handler
+                                buttonElement.off('click');
+                                buttonElement.on('click', function () {
                                     handleRemoveSaved($(this));
                                 });
 
@@ -153,7 +75,6 @@
                         },
                         error: function (xhr, status, error) {
                             console.error('Errore Ajax nell\'aggiunta:', error);
-                            // Gestisci l'errore lato utente
                         }
                     });
                 }
@@ -165,10 +86,129 @@
                 $('.saved').on('click', function (e) {
                     handleRemoveSaved($(this));
                 });
+            @endif
+            @if(!isset($search))
+                $('#searchItinerary').on('input', function () {
+                    var value = $(this).val().toLowerCase();
+                    $(".itinerary-container").each(function () {
+                        var title = $(this).attr('title').toLowerCase();
+                        var city = $(this).attr('city').toLowerCase();
+                        if (title.startsWith(value) || city.startsWith(value))
+                            $(this).show();
+                        else
+                            $(this).hide();
+                    });
+                });
+            @endif
+                });
+    </script>
+@endsection
 
+@section('body')
 
-            });
-        </script>
+    @yield('before_results')
+
+    @if(isset($search))
+        <div class="row">
+            <div class="col-3">
+                <a href="{{ route('search') }}" class="btn btn-outline-light text-secondary border-secondary p-2 m-2"><i class="bi bi-arrow-left"></i> Ritorna
+                    alla ricerca</a>
+            </div>
+            <div class="col-6">
+                <div class="d-flex justify-content-center">
+                    {{ $itineraries->links('pagination.custom-bootstrap-5') }}
+                </div>
+            </div>
+        </div>
+    @else
+        <div class="row">
+            <div class="input-group mb-3">
+                <div class="form-floating" id="searchBox">
+                    <input type="text" id="searchItinerary" class="form-control" placeholder="Cerca">
+                    <label for="searchItinerary">Cerca</label>
+                </div>
+            </div>
+        </div>
     @endif
+
+    @foreach ($itineraries as $itinerary)
+        <div class="itinerary-container" title="{{ $itinerary->title }}" city="{{ $itinerary->city->name }}">
+            <div class="card mb-2 shadow-sm rounded p-3 mb-3">
+                <div class="card-body">
+                    <div class="row g-2">
+                        <div class="col-lg-10 col-8">
+                            <h5 class="card-title">
+                                <a href="{{ route('itinerary.show', ['itinerary' => $itinerary]) }}"
+                                    class="link-underline-opacity-0 link-dark itinerary_title">{{ $itinerary->title }}</a>
+                            </h5>
+                        </div>
+
+                        @if (auth()->check())
+                            @if(auth()->user()->can('owns', $itinerary))
+                                <div class="col-lg-1 col-2">
+                                    <a href="{{ route('itinerary.destroy.confirm', ['itinerary' => $itinerary]) }}"
+                                        class="btn btn-outline-danger w-100 mb-2">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                                <div class="col-lg-1 col-2">
+                                    <a href="{{ route('itinerary.edit', ['itinerary' => $itinerary]) }}"
+                                        class="btn btn-outline-secondary w-100 mb-2">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                </div>
+                            @else
+                                <div class="col-lg-2 col-4">
+                                    @if ($itinerary->isFavouriteByUser(auth()->id()))
+                                        <button class="btn btn-secondary w-100 mb-2 saved" itineraryid="{{ $itinerary->id }}">
+                                            <i class="bi bi-check-lg"></i>
+                                            Salvato
+                                        </button>
+                                    @else
+                                        <button class="btn btn-outline-secondary w-100 mb-2 toSave" itineraryid="{{ $itinerary->id }}">
+                                            <i class="bi bi-bookmark"></i>
+                                            Salva
+                                        </button>
+                                    @endif
+                                </div>
+                            @endif
+                        @endif
+                    </div>
+
+                    <div class="row g-2">
+                        <div class="col-lg-10 col-8">
+                            <div class="badge bg-secondary fs-6 mb-2">
+                                <i class="bi bi-globe-europe-africa"></i>
+                                <span class="city_name">{{ $itinerary->city->name }}</span>
+                            </div>
+                            <div class="badge bg-primary fs-6 mb-2">
+                                <i class="bi bi-currency-euro"></i>
+                                {{ number_format($itinerary->stages->sum('cost'), 2, ',', '.') }}
+                            </div>
+                            <div class="badge bg-success fs-6 mb-2">
+                                <i class="bi bi-person-fill"></i>
+                                {{ $itinerary->user->name }}
+                            </div>
+                            <div class="badge bg-light fs-6 mb-2 text-dark">
+                                <i class="bi bi-eye"></i>
+                                {{ $itinerary->visibility }}
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2 col-4">
+                            <div class="badge bg-danger fs-6 mb-2 w-100">
+                                <i class="bi bi-heart-fill"></i>
+                                <span id="favourite{{ $itinerary->id }}">
+                                    {{ $itinerary->favourites->count() }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+    @yield('after_results')
 
 @endsection

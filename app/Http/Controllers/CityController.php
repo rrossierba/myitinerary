@@ -126,14 +126,17 @@ class CityController extends Controller
     }
 
     public function exist(Request $request){
+        $cityRegex = '/^([\p{L}\s]+) \(([\p{L}\s]+), ([\p{L}\s]+)\)$/u';
+
+        $request->validate([
+            'cityString'=>['required', 'regex:'.$cityRegex]
+        ]);
 
         if($request->get('cityString')!== null){
-            if (preg_match('/^([\p{L}\s]+) \(([\p{L}\s]+), ([\p{L}\s]+)\)$/u', $request->get('cityString'), $matches)) {
+            if (preg_match($cityRegex, $request->get('cityString'), $matches)) {
                 $name = trim($matches[1]);  
                 $region = trim($matches[2]);    
                 $state = trim($matches[3]);      
-            }else{
-                return response()->json(['error'=>'city pattern not matching']);
             }
         }else{
             $state = $request->get('state');

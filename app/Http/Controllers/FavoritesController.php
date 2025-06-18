@@ -41,7 +41,6 @@ class FavoritesController extends Controller
         }
         else
             $result = ['created'=>false];
-        // return Redirect::to(route('itinerary.show', ['itinerary' => $request->itineraryId]));
         return response()->json($result);
     }
 
@@ -51,7 +50,7 @@ class FavoritesController extends Controller
     public function destroy(Request $request)
     {
         $request->validate([
-            'itinerary_id'=>['required', 'integer']
+            'itinerary_id'=>['required']
         ]);
 
         $to_delete = Favorites::where([

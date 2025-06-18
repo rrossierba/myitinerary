@@ -6,6 +6,7 @@ use App\Models\Itinerary;
 use App\Models\Stage;
 use App\Policies\ItineraryPolicy;
 use App\Policies\StagePolicy;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Paginator::useBootstrapFive(); 
     }
 
     protected $policies = [

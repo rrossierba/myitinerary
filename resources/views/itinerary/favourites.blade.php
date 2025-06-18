@@ -4,5 +4,5 @@
 
 @section('breadcrumb')
 <li class="breadcrumb-item">Home</li>
-<li class="breadcrumb-item active">Itinerari Salvati</li>
+<li class="breadcrumb-item active">Itinerari</li>
 @endsection

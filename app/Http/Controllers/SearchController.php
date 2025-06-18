@@ -6,72 +6,66 @@ use Illuminate\Http\Request;
 use App\Models\Itinerary;
 use App\Models\Research;
 use App\Models\DTO\Filter;
+use Illuminate\Support\Facades\Redirect;
 
 class SearchController extends Controller
 {
-    public function search()
+    public function searchIndex()
     {
-        $filters = [
-            new Filter('Titolo', 'title'),
-            new Filter('Città', 'city'),
-            // new Filter('Categoria', 'category'),
-        ];
-        if(auth()->user() == null){
+        if (auth()->user() == null) {
             $history = [];
-        }
-        else{
+        } else {
             $history = Research::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->limit(5)->get();
         }
 
         return view('search.searchPage')
-            ->with('filters', $filters)
             ->with('history', $history);
     }
 
-    public function search_results(Request $request)
+    public function search(Request $request){
+        
+        $request->validate([
+            'query'=>['required','string'],
+            'history'=>['nullable']
+        ]);
+
+        $query_string = trim(strip_tags($request->input('query')));
+
+        $research = new Research;
+        $research->query_string = $query_string;
+
+        $history = $request->input('history')==null?false:true;
+        
+        if (auth()->check() && !$history) {
+            $research->user_id = auth()->id();
+            $research->save();
+        }
+
+        return Redirect::to(route('search.results', ['query'=>$query_string]));
+    }
+
+    public function search_results($query)
     {
-        $results = Itinerary::where('visibility', 'public')->where('user_id', '!=', auth()->id())->limit(30)->get();
-        return view('search.searchResults')->with('itineraries', $results);
-        // $query_string = $request->input('q');
-        // if ($query_string == '') {
-        //     return null;
-        // } else {
-        //     // create the research object
-        //     $research = new Research;
-        //     $research->query_string = $query_string;
-            
-        //     if(auth()->check()) {
-        //         $research->user_id = auth()->id();
-        //         $research->save();
-        //     }
-            
-        //     // create the query
-        //     $titleQuery = Itinerary::query();
-        //     $titleQuery->where('visibility', 'public');
-        //     if(auth()->check()){
-        //         $titleQuery->where('user_id', '!=', auth()->id());
-        //     }
-        //     $titleQuery->where('title', 'like', '%' . $query_string . '%');
-        //     $titleResults = $titleQuery->limit(10)->get();
+        $itineraries = Itinerary::where('visibility', 'public')
+        ->when(auth()->check(), function ($query) {
+            $query->where('user_id', '!=', auth()->id());
+        })
+        ->where(function ($q) use ($query) {
+            $q->where('title', 'like', "%{$query}%")
+                  ->orWhereHas('city', function ($q) use ($query) {
+                      $q->where('name', 'like', "%{$query}%");
+                  });
+        })
+        ->paginate(20);
 
-        //     return response()->json($titleResults);
+        return view('search.searchResults')->with(compact('itineraries'))->with('search', true);
+    }
 
-            // $cityQuery = Itinerary::query();
-            // $cityQuery->where('visibility', 'public');
-            // if(auth()->check()){
-            //     $cityQuery->where('user_id', '!=', auth()->id());
-            // }
-            // $cityQuery->where('title', 'like', '%' . $query_string . '%');
+    public function deleteHistory(){
 
-            
-            // $cityQuery->whereHas('city', function ($q) use ($query_string) {
-            //     $q->where('name', 'like', '%' . $query_string . '%');
-            // });
-            // $cityResults = $cityQuery->get();
-
-            // return view('search.searchResults')
-            //     ->with('itineraries', $results)
-            //     ->with('research', $research);
-        // }
     }
 }
+
+
+
+

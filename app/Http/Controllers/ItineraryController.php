@@ -37,24 +37,24 @@ class ItineraryController extends Controller
         $request->validate([
             'inputTitle' => ['required', 'string', 'max:255'],
             'citySelector' => ['required', 'string', 'max:255'],
-            'visibilitaRadio' => ['required', 'string', 'in:public,private'],
+            'visibility' => ['required', 'string', 'in:public,private'],
         ]);
 
         $itinerary = Itinerary::create([
             'title' => $request->input('inputTitle'),
             'city_id' => $this->findCity($request->input('citySelector'))->id,
-            'visibility' => $request->input('visibilitaRadio'),
+            'visibility' => $request->input('visibility'),
             'user_id' => auth()->id(),
         ]);
         
-        return Redirect::to(route('stage.new', ['itinerary'=>$itinerary]));
+        return Redirect::to(route('stage.create', ['itinerary'=>$itinerary]));
     }
 
     /**
      * Display the specified resource.
      */
     public function show(Itinerary $itinerary)
-    {
+    {   
         $this->authorize('view', $itinerary);
         return view('itinerary.itineraryDetail')->with('itinerary', $itinerary);
     }
@@ -81,13 +81,13 @@ class ItineraryController extends Controller
         $request->validate([
             'inputTitle' => ['required', 'string', 'max:255'],
             'citySelector' => ['required', 'string', 'max:255'],
-            'visibilitaRadio' => ['required', 'string', 'in:public,private'],
+            'visibility' => ['required', 'string', 'in:public,private'],
         ]);
 
         $itinerary->update([
             'title' => $request->input('inputTitle'),
             'city_id' => $this->findCity($request->input('citySelector'))->id,
-            'visibility' => $request->input('visibilitaRadio'),
+            'visibility' => $request->input('visibility'),
         ]);
 
         return Redirect::to(route('itinerary.show', ['itinerary'=>$itinerary]));
