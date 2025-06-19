@@ -45,7 +45,7 @@ class StageController extends Controller
     public function create(Itinerary $itinerary)
     {
         $this->authorize('isOwner', $itinerary);
-        return view('stage.editStage')->with('itinerary', $itinerary);
+        return view('stage.editStage');
     }
 
     public function store(Request $request, Itinerary $itinerary)
@@ -65,7 +65,10 @@ class StageController extends Controller
         $prices = $request->input('inputPrice');
         $durations = $request->input('inputDuration');
         $descriptions = $request->input('textDescription');
-    
+        
+        $redirectToIndex = $itinerary->stages->count() == 0;
+
+
         foreach ($locations as $index => $location) {
             Stage::create([
                 'itinerary_id' => $itinerary->id,
@@ -75,9 +78,10 @@ class StageController extends Controller
                 'description' => $descriptions[$index] ?? null,
             ]);
         }
-    
-        return redirect()->route('itinerary.edit', ['itinerary' => $itinerary->id])
-                         ->with('success', 'Tappe salvate con successo.');
+        
+        return $redirectToIndex? 
+        redirect()->route('itinerary.index'):
+        redirect()->route('itinerary.edit', compact('itinerary'));
     }
     
 

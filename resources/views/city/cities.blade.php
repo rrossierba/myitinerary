@@ -194,9 +194,9 @@
     </div>
     <nav id="paginationNav" class="d-none">
         <ul class="pagination justify-content-center">
-            <li class="page-item" id="previousPage"><a class="page-link" href="#">Precedente</a></li>
+            <li class="page-item" id="previousPage"><a class="page-link" href="#">&lsaquo;</a></li>
             <!-- Numeri di pagina -->
-            <li class="page-item" id="nextPage"><a class="page-link" href="#">Successivo</a></li>
+            <li class="page-item" id="nextPage"><a class="page-link" href="#">&rsaquo;</a></li>
             <li>
                 <select id="rowsPerPage" class="form-control justify-content-end">
                     @php

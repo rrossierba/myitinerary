@@ -22,7 +22,7 @@
 <body>
     <div class="bg-white border-bottom">
         <nav class="navbar navbar-expand-lg">
-            <div class="container-fluid text-center">
+            <div class="container-fluid">
 
                 <!-- Logo -->
                 <a class="navbar-brand d-flex align-items-center" href="{{ route('home') }}">
@@ -39,16 +39,16 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item ms-1">
-                            <a class="btn nav-link" aria-current="page" href="{{ route('home') }}">Home</a>
+                            <a class="ps-1 nav-link" aria-current="page" href="{{ route('home') }}">Home</a>
                         </li>
                         <li class="nav-item ms-1">
-                            <a class="btn nav-link" aria-current="page" href="{{ route('search') }}">Cerca
+                            <a class="ps-1 nav-link" aria-current="page" href="{{ route('search') }}">Cerca
                                 Itinerario</a>
                         </li>
                         @if (auth()->check())
                             @if (auth()->user()->role == 'registered_user')
                                 <li class="nav-item dropdown ms-1">
-                                    <a class="btn nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                    <a class="ps-1 nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                         aria-expanded="false">
                                         Gestisci itinerari
                                     </a>
@@ -60,12 +60,12 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item ms-1">
-                                    <a class="btn nav-link" aria-current="page" href="{{ route('favourites.index') }}">Itinerari
+                                    <a class="ps-1 nav-link" aria-current="page" href="{{ route('favourites.index') }}">Itinerari
                                         salvati</a>
                                 </li>
                             @else
                                 <li class="nav-item dropdown ms-1">
-                                    <a class="btn nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                    <a class="ps-1 nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                         aria-expanded="false">
                                         Admin
                                     </a>
@@ -81,7 +81,7 @@
                     <ul class="navbar-nav">
                         @if (auth()->check())
                             <li class="nav-item dropdown">
-                                <a class="btn nav-link" href="#" role="button" data-bs-toggle="dropdown"
+                                <a class="btn ps-1 nav-link" href="#" role="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">
                                     <i class="bi bi-person-circle"></i>
                                     {{ auth()->user()->name }}
@@ -89,7 +89,7 @@
                                         (Amministratore)
                                     @endif
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end text-center">
+                                <ul class="dropdown-menu dropdown-menu-end">
                                     <li><a class="dropdown-item p-2" href="{{ route('user.panel') }}"><i class="bi bi-person-gear"></i> Gestisci</a>
                                     </li>
                                     <li>

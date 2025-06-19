@@ -26,26 +26,36 @@
                 const fields = [
                     'input[name=inputTitle]',
                     'input[name=citySelector]',
-                    'select[name=visibility]' // aggiunta della select
+                    'input[name=visibility]'
                 ];
 
-                const initialValues = fields.map((field) => $(field).val().trim());
+                // Leggi i valori iniziali correttamente
+                const initialValues = fields.map((field) => {
+                    const $el = $(field);
+                    return $el.is(':checkbox') ? $el.prop('checked') : $el.val().trim();
+                });
 
                 fields.forEach((field, index) => {
                     const $el = $(field);
-                    const eventType = $el.is('select') ? 'change' : 'input';
+                    const eventType = $el.is(':checkbox') ? 'change' : 'input';
 
                     $el.on(eventType, function () {
                         let changed = false;
+
                         for (let i = 0; i < fields.length; i++) {
-                            if ($(fields[i]).val().trim() !== initialValues[i]) {
+                            const $f = $(fields[i]);
+                            const currentValue = $f.is(':checkbox') ? $f.prop('checked') : $f.val().trim();
+
+                            if (currentValue !== initialValues[i]) {
                                 changed = true;
                                 break;
                             }
                         }
+
                         $('#submitButton').toggle(changed);
                     });
                 });
+
 
 
             @endif
@@ -53,7 +63,7 @@
             // autocompletamento delle città
             $('input[name=citySelector]').on('input', function () {
                 $('#invalidCity').hide();
-                
+
                 const query = $(this).val();
 
                 if (query.length < 2) {
@@ -69,8 +79,8 @@
                         data.forEach(city => {
                             $('#citySuggestions').append(
                                 `<li class="list-group-item list-group-item-action"> 
-                                                                ${city.name} (${city.region}, ${city.state})
-                                                                </li>`
+                                    ${city.name} (${city.region}, ${city.state})
+                                    </li>`
                             );
                         });
                     }
@@ -136,7 +146,7 @@
                         },
                         success: function (data) {
                             if (data.error) {
-                                $('#errorModal .modal-body').html('Città definita in modo errato <br> La città deve essere scritta come ');
+                                $('#errorModal .modal-body').html('Città definita in modo errato <br> La città deve essere scritta come Nome (Regione, Stato)');
                             }
                             if (data.exist == false) {
                                 $('#errorModal .modal-body').html(`Città “${$('input[name=citySelector]').val()}” non definita`);
@@ -175,7 +185,6 @@
     @else
             <form name="itinerary" method="post" action="{{ route('itinerary.store') }}">
         @endif
-
             @csrf
 
             <div class="row justify-content-end mb-2">
@@ -200,7 +209,7 @@
             </div>
 
             <!-- titolo -->
-            <div class="row mb-3">
+            <div class="row">
                 <div class="col-12">
                     <div class="form-floating">
                         @if (isset($itinerary))
@@ -210,15 +219,14 @@
                             <input type="text" id="inputTitle" name="inputTitle" placeholder="Titolo" class="form-control">
                         @endif
                         <label for="inputTitle" class="col-form-label">Titolo</label>
-                        <!-- <span class="invalidInput" id="invalidTitle"></span> -->
                         <div class="alert alert-danger" id="invalidTitle" style="display: none;"></div>
                     </div>
                 </div>
             </div>
 
-            <div class="row mb-3">
+            <div class="row">
                 <!-- città -->
-                <div class="col-lg-6 col-12">
+                <div class="col-12">
                     <div class="form-floating mt-1">
                         @if (isset($itinerary))
                             <input type="text" class="form-control w-100" autocomplete="off" name="citySelector"
@@ -229,27 +237,35 @@
                                 placeholder="Inserisci una città">
                         @endif
                         <label for="inserCity" class="form-label">Seleziona la Città</label>
-                        <!-- <span class="invalidInput" id="invalidCity"></span> -->
                         <div class="alert alert-danger" id="invalidCity" style="display: none;"></div>
                     </div>
                     <ul id="citySuggestions" class="list-group position-absolute" style="z-index: 1000;"></ul>
                 </div>
-
-                <!-- visibilità -->
-                <div class="col-md-6 col-12">
+            </div>
+            <!-- visibilità -->
+            <div class="row">
+                <div class="col-12">
                     <div class="form-floating">
                         @php
                             $selected = isset($itinerary) ? $itinerary->visibility->value : 'public';
                         @endphp
-                        <div class="mb-3">
-                            <label for="visibilitaSelect">Visibilità</label>
-                            <select class="form-control h-100" id="visibilitaSelect" name="visibility" required>
-                                <option value="public" {{ $selected === 'public' ? 'selected' : '' }}>Pubblica</option>
-                                <option value="private" {{ $selected === 'private' ? 'selected' : '' }}>Privata</option>
-                            </select>
+
+                        <div class="form-floating mt-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="visibilityCheckbox" name="visibility"
+                                    value="private" {{ $selected === 'private' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="visibilityCheckbox">
+                                    @if(isset($itinerary))
+                                        Privato
+                                    @else
+                                        Rendere l'itinerario privato
+                                    @endif
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </form>
 
@@ -263,17 +279,17 @@
                                 <div class="col-lg-4 col-6">
                                     {{ $stage->location }}
                                 </div>
-                                <div class="col-lg-2 col-3">
+                                <div class="col-lg-2 d-lg-block d-none">
                                     Prezzo: {{ $stage->cost }} €
                                 </div>
-                                <div class="col-lg-2 col-3">
+                                <div class="col-lg-2 d-lg-block d-none">
                                     Durata: {{ $stage->duration }} min.
                                 </div>
-                                <div class="col-lg-2 col-6">
+                                <div class="col-lg-2 col-3">
                                     <a href="{{ route('stage.edit', ['stage' => $stage]) }}" class="btn btn-primary mb-2 w-100"><i
-                                            class="bi bi-pencil"></i> Modifica Tappa</a>
+                                            class="bi bi-pencil"></i> Modifica</a>
                                 </div>
-                                <div class="col-lg-2 col-6">
+                                <div class="col-lg-2 col-3">
                                     <a href="{{ route('stage.destroy.confirm', ['stage' => $stage]) }}"
                                         class="btn btn-danger mb-2 w-100"><i class="bi bi-trash"></i> Elimina</a>
                                 </div>

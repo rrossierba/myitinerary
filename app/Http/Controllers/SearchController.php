@@ -58,12 +58,9 @@ class SearchController extends Controller
         })
         ->paginate(20);
 
-        return view('search.searchResults')->with(compact('itineraries'))->with('search', true);
+        return view('search.searchResults')->with(compact('itineraries'))->with('search', true)->with('query', $query);
     }
 
-    public function deleteHistory(){
-
-    }
 }
 
 

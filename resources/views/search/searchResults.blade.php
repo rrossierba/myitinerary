@@ -1,8 +1,8 @@
 @extends('layouts.show')
 
 @section('title')
-    @if (isset($research))
-        Risultati per {{ $research->query_string }} | {{ $research->group }}
+    @if (isset($search))
+        Risultati per "{{ $query }}"
     @else
         Tutti gli itinerari
     @endif

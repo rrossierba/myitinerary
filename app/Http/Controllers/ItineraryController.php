@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\Visibility;
 use App\Models\City;
 use App\Models\Itinerary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-
+use Illuminate\Validation\Rules\Enum;
 class ItineraryController extends Controller
 {
 
@@ -37,13 +38,15 @@ class ItineraryController extends Controller
         $request->validate([
             'inputTitle' => ['required', 'string', 'max:255'],
             'citySelector' => ['required', 'string', 'max:255'],
-            'visibility' => ['required', 'string', 'in:public,private'],
+            'visibility' => ['nullable', new Enum(Visibility::class)],
         ]);
+
+        $visibility = Visibility::tryFrom($request->input('visibility')) ?? Visibility::PUBLIC;
 
         $itinerary = Itinerary::create([
             'title' => $request->input('inputTitle'),
             'city_id' => $this->findCity($request->input('citySelector'))->id,
-            'visibility' => $request->input('visibility'),
+            'visibility' => $visibility,
             'user_id' => auth()->id(),
         ]);
         
@@ -81,13 +84,15 @@ class ItineraryController extends Controller
         $request->validate([
             'inputTitle' => ['required', 'string', 'max:255'],
             'citySelector' => ['required', 'string', 'max:255'],
-            'visibility' => ['required', 'string', 'in:public,private'],
+            'visibility' => ['nullable', new Enum(Visibility::class)],
         ]);
+
+        $visibility = Visibility::tryFrom($request->input('visibility')) ?? Visibility::PUBLIC;
 
         $itinerary->update([
             'title' => $request->input('inputTitle'),
             'city_id' => $this->findCity($request->input('citySelector'))->id,
-            'visibility' => $request->input('visibility'),
+            'visibility' => $visibility,
         ]);
 
         return Redirect::to(route('itinerary.show', ['itinerary'=>$itinerary]));

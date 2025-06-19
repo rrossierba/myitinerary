@@ -2,6 +2,7 @@
     outline: none !important;
     box-shadow: none !important;
     border-color: transparent !important;
+    border-radius: 5px;
 }
 
 .nav-link:hover {
@@ -56,46 +57,10 @@
     padding: 1rem;
 }
 
-/* navbar */
-.nav-color {
-    background-color: #047b27;
-}
-
-/* Cards */
-.home-card {
-    transition: transform 0.3s ease;
-}
-
-.home-card:hover {
-    transform: scale(1.03);
-    /* ingrandisce del 5% */
-}
-
-.card-img-top {
-    height: 250px;
-    /* altezza fissa dell'immagine */
-    object-fit: cover;
-}
-
 #citySuggestions li,
 .clickable {
     cursor: pointer;
 }
-
-/* body, html {
-    height: 100%;
-    overflow: hidden;
-  }
-
-.main-container {
-    height: calc(100vh - 90px);
-    overflow-y: auto;
-  }
-
-.main-content{
-    max-width: 90%;
-    margin-left: 5%;
-} */
 
 .hero-content {
     height: 100%;
