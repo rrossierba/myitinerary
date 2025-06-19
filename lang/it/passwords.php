@@ -15,7 +15,7 @@ return [
     'password'=>'Password',
     'wrong_credentials'=>'Le credenziali non sono valide. Riprova.',
     'login'=>'Login',
-    'register'=>'Register',
+    'register'=>'Registrati',
     'login_redirect'=>'Non hai un account?',
     'register_redirect' => 'Hai già un account?',
     'name'=>'Nome',

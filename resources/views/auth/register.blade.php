@@ -1,6 +1,8 @@
 @extends('layouts.master')
 
-@section('title', 'Register')
+@section('title')
+@lang('passwords.register')
+@endsection
 
 @section('scripts')
     <script>

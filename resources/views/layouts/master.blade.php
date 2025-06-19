@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <div class="bg-white border-bottom">
+    <div class="bg-white border-bottom fixed-top">
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
 
@@ -150,7 +150,7 @@
         </nav>
     </div>
 
-    <div class="container">
+    <div class="container" style="margin-top: 110px;">
 
         <!-- titolo -->
         <div class="row">
