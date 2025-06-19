@@ -1,16 +1,17 @@
 @extends('layouts.master')
 
-@section('title', 'Home Page')
+@section('title')
+    @lang('nav.home_page')
+@endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item active">Home</li>
+    <li class="breadcrumb-item active">@lang('nav.home')</li>
 @endsection
 
 @section('body')
     <div class="hero-content">
-        <p class="lead">Benvenuto in MyItinerary, l'applicazione per gestire gli itinerari dei tuoi viaggi e per scoprire
-            nuovi itinerari.</p>
-        <p class="fs-5">Scopri ora cosa puoi fare!</p>
+        <p class="lead">@lang('nav.welcome_message')</p>
+        <p class="fs-5">@lang('nav.welcome_subtitle')</p>
     </div>
 
     <section class="py-5 text-center">
@@ -22,8 +23,8 @@
                             <div class="feature-icon">
                                 <i class="bi bi-search"></i>
                             </div>
-                            <h4>Cerca itinerari</h4>
-                            <p>Trova nuovi itinerari in base ai tuoi interessi</p>
+                            <h4>@lang('nav.search_itinerary')</h4>
+                            <p>@lang('nav.search_home_message')</p>
                         </a>
                     </div>
                 </div>
@@ -33,8 +34,8 @@
                             <div class="feature-icon">
                                 <i class="bi bi-map"></i>
                             </div>
-                            <h4>Crea itinerari</h4>
-                            <p>Crea gli itinerari di tuoi viaggi personalizzati</p>
+                            <h4>@lang('nav.create_itinerary')</h4>
+                            <p>@lang('nav.create_home_message')</p>
                         </a>
                     </div>
                 </div>
@@ -44,8 +45,8 @@
                             <div class="feature-icon">
                                 <i class="bi bi-share"></i>
                             </div>
-                            <h4>Condividi e conserva</h4>
-                            <p>Condividi foto e itinerari dei tuoi viaggi</p>
+                            <h4>@lang('nav.home_share')</h4>
+                            <p>@lang('nav.share_home_message')</p>
                         </a>
                     </div>
                 </div>

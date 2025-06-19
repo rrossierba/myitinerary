@@ -1,9 +1,11 @@
 @extends('layouts.show')
 
-@section('title', 'I miei Itinerari')
+@section('title')
+@lang('nav.my_itineraries')
+@endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item">Home</li>
-    <li class="breadcrumb-item">Gestisci Itinerari</li>
-    <li class="breadcrumb-item active">I miei Itinerari</li>
+    <li class="breadcrumb-item">@lang('nav.home')</li>
+    <li class="breadcrumb-item">@lang('nav.manage_itineraries')</li>
+    <li class="breadcrumb-item">@lang('nav.my_itineraries')</li>
 @endsection

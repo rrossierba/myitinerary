@@ -41,30 +41,30 @@
                     {
                         inputName: 'name',
                         regex: /^[a-zA-Z ]+$/,
-                        emptyMessage: 'Il nome è obbligatorio',
-                        formatMessage: 'Il nome non può contenere caratteri speciali o cifre',
+                        emptyMessage: '@lang('passwords.error_missing_name')',
+                        formatMessage: '@lang('passwords.error_format_name')',
                         errorId: 'errorNameDiv'
                     },
                     {
                         inputName: 'email',
                         regex: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                        emptyMessage: 'La email è obbligatoria',
-                        formatMessage: 'Il formato della email non è valido',
+                        emptyMessage: '@lang('passwords.error_missing_email')',
+                        formatMessage: '@lang('passwords.error_format_email')',
                         errorId: 'errorMailDiv'
                     },
                     {
                         inputName: 'password',
                         regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,15}$/,
-                        emptyMessage: 'La password è obbligatoria',
-                        formatMessage: 'La password deve contenere: maiuscole, minuscole, numeri, simboli',
+                        emptyMessage: '@lang('passwords.error_missing_password')',
+                        formatMessage: '@lang('passwords.error_format_password')',
                         errorId: 'errorPasswordDiv'
                     },
                     {
                         inputName: 'password_confirmation',
-                        emptyMessage: 'Non hai confermato la password',
+                        emptyMessage: '@lang('passwords.error_missing_password_confirm')',
                         errorId: 'errorPasswordConfirmDiv',
                         equalsTo: $(`input[name=password]`).val(),
-                        notEqualMessage: 'La conferma della password non coincide'
+                        notEqualMessage: '@lang('passwords.error_password_confirm')'
                     }
                 ];
 
@@ -125,39 +125,39 @@
                 @csrf
 
                 <div class="form-floating mb-3">
-                    <input type="text" name="name" class="form-control" id="floatingInput" placeholder="Nome">
-                    <label for="floatingInput">Nome</label>
+                    <input type="text" name="name" class="form-control" id="floatingName" placeholder="@lang('passwords.name')">
+                    <label for="floatingName">@lang('passwords.name')</label>
                     <div class="alert alert-danger" id="errorNameDiv" style="display: none"></div>
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="email" name="email" class="form-control" id="floatingInput" placeholder="Indirizzo Email">
-                    <label for="floatingInput">Indirizzo Email</label>
+                    <input type="email" name="email" class="form-control" id="floatingPw" placeholder="@lang('passwords.email_address')">
+                    <label for="floatingPw">@lang('passwords.email_address')</label>
                     <div class="alert alert-danger" id="errorMailDiv" style="display: none"></div>
                 </div>
 
                 <div class="form-floating mb-3">
                     <input type="password" class="form-control" name="password" id="floatingPassword"
-                        placeholder="Password">
-                    <label for="floatingPassword">Password</label>
+                        placeholder="@lang('passwords.password')">
+                    <label for="floatingPassword">@lang('passwords.password')</label>
                     <div class="alert alert-danger" id="errorPasswordDiv" style="display: none"></div>
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="password" class="form-control" name="password_confirmation" id="floatingPassword"
-                        placeholder="Conferma Password">
-                    <label for="floatingPassword">Conferma Password</label>
+                    <input type="password" class="form-control" name="password_confirmation" id="floatingPasswordConfirm"
+                        placeholder="@lang('passwords.password_confirm')">
+                    <label for="floatingPasswordConfirm">@lang('passwords.password_confirm')</label>
                     <div class="alert alert-danger" id="errorPasswordConfirmDiv" style="display: none"></div>
                 </div>
 
                 <div class="form-group text-center mb-3">
                     <label for="register-submit" class="btn btn-primary w-100"><i class="bi bi-person-plus"></i>
-                        Register</label>
+                        @lang('passwords.register')</label>
                     <input id="register-submit" class="d-none" type="submit" value="Register">
                 </div>
             </form>
             <hr>
-            <p class="text-center">Hai già un account? <a href="{{route('login')}}">Login</a></p>
+            <p class="text-center">@lang('passwords.register_redirect') <a href="{{route('login')}}">Login</a></p>
         </div>
     </div>
 @endsection

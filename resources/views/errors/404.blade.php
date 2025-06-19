@@ -1,7 +1,13 @@
 @extends('layouts.error')
 
-@section('title', '404 - Pagina non trovata')
+@section('title')
+404 - @lang('errors.page_not_found')
+@endsection
 
-@section('error_title', 'Pagina non trovata')
+@section('error_title')
+@lang('errors.page_not_found')
+@endsection
 
-@section('error_general_message', 'Questa pagina non esiste o potrebbe essere stata rimossa')
+@section('error_general_message')
+@lang('errors.404_general_message')
+@endsection

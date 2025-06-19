@@ -22,22 +22,22 @@
 @section('scripts')
     <script>
         $(document).ready(function () {
-            const formatErrorMessage = 'Formato errato. Valori accettati: lettere, apostrofi, trattini, punti';
+            const formatErrorMessage = '@lang('city.format_error_message')';
             var fields = [
                 {
                     input: $('input[name=inputState]'),
                     errorId: '#invalidState',
-                    errorMessage: 'Lo stato è obbligatorio'
+                    errorMessage: '@lang('city.missing_state_message')'
                 },
                 {
                     input: $('input[name=inputRegion]'),
                     errorId: '#invalidRegion',
-                    errorMessage: 'La regione è obbligatoria'
+                    errorMessage: '@lang('city.missing_region_message')'
                 },
                 {
                     input: $('input[name=inputName]'),
                     errorId: '#invalidName',
-                    errorMessage: 'Il nome è obbligatorio'
+                    errorMessage: '@lang('city.missing_name_message')'
                 }
             ];
 
@@ -70,13 +70,13 @@
                         $(field.errorId).show();
                         field.input.addClass('invalidFocus');
                         field.input.focus();
-                    } else if(!error && !inputValue.trim().match(/^[A-Za-zÀ-ÖØ-öø-ÿ'’.\- ]+$/)){
+                    } else if (!error && !inputValue.trim().match(/^[A-Za-zÀ-ÖØ-öø-ÿ'’.\- ]+$/)) {
                         error = true;
                         $(field.errorId).text(formatErrorMessage);
                         $(field.errorId).show();
                         field.input.addClass('invalidFocus');
                         field.input.focus();
-                    } 
+                    }
                     else {
                         field.input.removeClass('invalidFocus');
                         $(field.errorId).empty();
@@ -94,7 +94,7 @@
                         },
                         success: function (data) {
                             if (data.exist) {
-                                $('#errorModal .modal-body').html('Città già esistente');
+                                $('#errorModal .modal-body').html('@lang('city.city_already_existing_message')');
                                 var modal = new bootstrap.Modal(document.getElementById('errorModal'));
                                 modal.show();
                             } else
@@ -137,14 +137,15 @@
                     <input type="submit" class="d-none" id="editSubmit">
                     @if (isset($city))
                         <label for="editSubmit" class="btn btn-success w-100" id="submitButton" style="display: none"><i
-                                class="bi bi-floppy"></i> Modifica</label>
+                                class="bi bi-floppy"></i> @lang('city.modify')</label>
                     @else
                         <label for="editSubmit" class="btn btn-success w-100"><i class="bi bi-pencil" id="submitButton"></i>
-                            Salva</label>
+                            @lang('city.save')</label>
                     @endif
                 </div>
                 <div class="col-lg-2 col-md-4 col-6">
-                    <a href="{{ url()->previous() }}" class="btn btn-danger w-100"><i class="bi bi-x-lg"></i> Annulla</a>
+                    <a href="{{ url()->previous() }}" class="btn btn-danger w-100"><i class="bi bi-x-lg"></i>
+                        @lang('city.cancel')</a>
                 </div>
             </div>
 
@@ -153,12 +154,13 @@
                 <div class="col-12">
                     <div class="form-floating">
                         @if (isset($city))
-                            <input type="text" id="inputState" name="inputState" value="{{ $city->state }}"
+                            <input type="text" id="inputState" name="inputState" value="{{ $city->state }}" placeholder="@lang('city.state')"
                                 class="form-control">
                         @else
-                            <input type="text" id="inputState" name="inputState" placeholder="Stato" class="form-control">
+                            <input type="text" id="inputState" name="inputState" placeholder="@lang('city.state')"
+                                class="form-control">
                         @endif
-                        <label for="inputState" class="col-form-label">Stato</label>
+                        <label for="inputState" class="col-form-label">@lang('city.state')</label>
                         <div class="alert alert-danger" id="invalidState" style="display: none"></div>
                     </div>
                 </div>
@@ -170,11 +172,12 @@
                     <div class="form-floating">
                         @if (isset($city))
                             <input type="text" id="inputRegion" name="inputRegion" value="{{ $city->region }}"
-                                class="form-control">
+                                class="form-control" placeholder="@lang('city.region')">
                         @else
-                            <input type="text" id="inputRegion" name="inputRegion" placeholder="Regione" class="form-control">
+                            <input type="text" id="inputRegion" name="inputRegion" placeholder="@lang('city.region')"
+                                class="form-control">
                         @endif
-                        <label for="inputRegion" class="col-form-label">Regione</label>
+                        <label for="inputRegion" class="col-form-label">@lang('city.region')</label>
                         <div class="alert alert-danger" id="invalidRegion" style="display: none"></div>
                     </div>
                 </div>
@@ -185,11 +188,12 @@
                 <div class="col-12">
                     <div class="form-floating">
                         @if (isset($city))
-                            <input type="text" id="inputName" name="inputName" value="{{ $city->name }}" class="form-control">
+                            <input type="text" id="inputName" name="inputName" value="{{ $city->name }}" class="form-control" placeholder="@lang('city.name')">
                         @else
-                            <input type="text" id="inputName" name="inputName" placeholder="Nome" class="form-control">
+                            <input type="text" id="inputName" name="inputName" placeholder="@lang('city.name')"
+                                class="form-control">
                         @endif
-                        <label for="inputName" class="col-form-label">Nome</label>
+                        <label for="inputName" class="col-form-label">@lang('city.name')</label>
                         <div class="alert alert-danger" id="invalidName" style="display: none"></div>
                     </div>
                 </div>

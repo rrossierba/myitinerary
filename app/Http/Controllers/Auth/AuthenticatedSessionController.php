@@ -53,8 +53,4 @@ class AuthenticatedSessionController extends Controller
 
         return response()->json(['email_exists'=>User::where('email', $request->get('email'))->exists()]);
     }
-
-    public function controlPanel(){
-        abort(501);
-    }
 }

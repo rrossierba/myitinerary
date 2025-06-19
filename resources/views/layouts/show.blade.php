@@ -18,7 +18,7 @@
                         },
                         success: function (data) {
                             if (data.deleted === true) {
-                                buttonElement.html(`<i class="bi bi-bookmark"></i> Salva`);
+                                buttonElement.html(`<i class="bi bi-bookmark"></i> @lang('itinerary.save')`);
                                 buttonElement.removeClass('btn-secondary saved');
                                 buttonElement.addClass('btn-outline-secondary toSave');
 
@@ -31,20 +31,14 @@
                                 favourite_number = favourite_number = parseInt(favourite.text(), 10);
                                 favourite.text(favourite_number - 1)
 
-                            } else {
-                                console.warn('Errore nella rimozione (server ha risposto ma non deleted=true):', data);
                             }
                         },
-                        error: function (xhr, status, error) {
-                            console.error('Errore Ajax nella rimozione:', error);
-                        }
                     });
                 }
 
                 // aggiunta ai preferiti
                 function handleAddSaved(buttonElement) {
                     const itinerary_id = buttonElement.attr('itineraryid');
-                    console.log('Tentativo di aggiunta preferito per ID:', itinerary_id);
 
                     $.ajax({
                         url: '{{ route('favourites.add') }}',
@@ -55,8 +49,7 @@
                         },
                         success: function (data) {
                             if (data.created === true) {
-                                console.log('Preferito aggiunto con successo:', data);
-                                buttonElement.html(`<i class="bi bi-check-lg"></i> Salvato`);
+                                buttonElement.html(`<i class="bi bi-check-lg"></i> @lang('itinerary.saved')`);
                                 buttonElement.removeClass('btn-outline-secondary toSave');
                                 buttonElement.addClass('btn-secondary saved');
 
@@ -69,12 +62,7 @@
                                 favourite_number = parseInt(favourite.text(), 10);
                                 favourite.text(favourite_number + 1)
 
-                            } else {
-                                console.warn('Errore nell\'aggiunta (server ha risposto ma non created=true):', data);
                             }
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('Errore Ajax nell\'aggiunta:', error);
                         }
                     });
                 }
@@ -100,25 +88,19 @@
                     });
                 });
             @endif
-                    });
+                });
     </script>
 @endsection
 
 @section('body')
     @if(isset($search))
-        <div class="row align-items-center">
-            <div class="">
-                <div class="d-flex justify-content-center">
-                    {{ $itineraries->links('pagination.custom-bootstrap-5') }}
-                </div>
-            </div>
-        </div>
+        {{ $itineraries->links('pagination.custom-bootstrap-5') }}
     @else
         <div class="row">
             <div class="input-group mb-3">
                 <div class="form-floating" id="searchBox">
-                    <input type="text" id="searchItinerary" class="form-control" placeholder="Cerca">
-                    <label for="searchItinerary">Cerca</label>
+                    <input type="text" id="searchItinerary" class="form-control" placeholder="@lang('nav.search')">
+                    <label for="searchItinerary">@lang('nav.search')</label>
                 </div>
             </div>
         </div>
@@ -156,12 +138,12 @@
                                         @if ($itinerary->isFavouriteByUser(auth()->id()))
                                             <button class="btn btn-secondary w-100 mb-2 saved" itineraryid="{{ $itinerary->id }}">
                                                 <i class="bi bi-check-lg"></i>
-                                                Salvato
+                                                @lang('itinerary.saved')
                                             </button>
                                         @else
                                             <button class="btn btn-outline-secondary w-100 mb-2 toSave" itineraryid="{{ $itinerary->id }}">
                                                 <i class="bi bi-bookmark"></i>
-                                                Salva
+                                                @lang('itinerary.save')
                                             </button>
                                         @endif
                                     </div>
@@ -185,7 +167,11 @@
                                 </div>
                                 <div class="badge bg-light fs-6 mb-2 text-dark">
                                     <i class="bi bi-eye"></i>
-                                    {{ $itinerary->visibility }}
+                                    @if($itinerary->visibility->value == 'public')
+                                        @lang('itinerary.public')
+                                    @else
+                                        @lang('itinerary.private')
+                                    @endif
                                 </div>
                             </div>
 
@@ -203,6 +189,6 @@
             </div>
         @endforeach
     @else
-        <p class="text-center">Nessun itinerario da mostrare.</p>
+        <p class="text-center">@lang('itinerary.public').</p>
     @endif
 @endsection

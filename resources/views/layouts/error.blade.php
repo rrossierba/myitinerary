@@ -1,8 +1,8 @@
 @extends('layouts.master')
 
 @section('breadcrumb')
-<li class="breadcrumb-item" aria-current="page">Home</li>
-<li class="breadcrumb-item active" aria-current="page">Error @yield('title')</li>
+<li class="breadcrumb-item" aria-current="page">@lang('nav.home')</li>
+<li class="breadcrumb-item active" aria-current="page">@lang('nav.error') @yield('title')</li>
 @endsection
 
 @section('body')
@@ -27,7 +27,7 @@
                 <div class="card-footer bg-error">
                     @yield('error_footer')
                     <a href="{{ route('home') }}" class="btn btn-outline-danger">
-                        <i class="bi bi-house"></i> Torna alla home
+                        <i class="bi bi-house"></i> @lang('errors.back_home')
                     </a>
                 </div>
             </div>

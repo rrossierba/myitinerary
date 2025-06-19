@@ -58,6 +58,4 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
-
-    Route::get('user-panel',[AuthenticatedSessionController::class, 'controlPanel'])->name('user.panel');
 });

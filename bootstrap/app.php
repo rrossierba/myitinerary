@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'isRegisteredUser' => \App\Http\Middleware\IsRegisteredUserMiddleware::class,
             'isAdmin' => \App\Http\Middleware\IsAdminMiddleware::class,
+            'language' =>\App\Http\Middleware\Language::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

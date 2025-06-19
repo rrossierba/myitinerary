@@ -39,38 +39,42 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item ms-1">
-                            <a class="ps-1 nav-link" aria-current="page" href="{{ route('home') }}">Home</a>
+                            <a class="ps-1 nav-link" aria-current="page"
+                                href="{{ route('home') }}">@lang('nav.home')</a>
                         </li>
                         <li class="nav-item ms-1">
-                            <a class="ps-1 nav-link" aria-current="page" href="{{ route('search') }}">Cerca
-                                Itinerario</a>
+                            <a class="ps-1 nav-link" aria-current="page"
+                                href="{{ route('search') }}">@lang(key: 'nav.search_itinerary')</a>
                         </li>
                         @if (auth()->check())
                             @if (auth()->user()->role == 'registered_user')
                                 <li class="nav-item dropdown ms-1">
                                     <a class="ps-1 nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                         aria-expanded="false">
-                                        Gestisci itinerari
+                                        @lang('nav.manage_itineraries')
                                     </a>
                                     <ul class="dropdown-menu mb-2">
-                                        <li><a class="dropdown-item" href="{{ route('itinerary.index') }}">I miei itinerari</a>
+                                        <li><a class="dropdown-item"
+                                                href="{{ route('itinerary.index') }}">@lang('nav.my_itineraries')</a>
                                         </li>
-                                        <li><a class="dropdown-item" href="{{ route('itinerary.create') }}">Crea Itinerario</a>
+                                        <li><a class="dropdown-item"
+                                                href="{{ route('itinerary.create') }}">@lang('nav.create_itinerary')</a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li class="nav-item ms-1">
-                                    <a class="ps-1 nav-link" aria-current="page" href="{{ route('favourites.index') }}">Itinerari
-                                        salvati</a>
+                                    <a class="ps-1 nav-link" aria-current="page"
+                                        href="{{ route('favourites.index') }}">@lang('nav.saved_itineraries')</a>
                                 </li>
                             @else
                                 <li class="nav-item dropdown ms-1">
                                     <a class="ps-1 nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                         aria-expanded="false">
-                                        Admin
+                                        @lang('nav.admin')
                                     </a>
                                     <ul class="dropdown-menu mb-2">
-                                        <li><a class="dropdown-item" href="{{ route('city.index') }}">Gestisci città</a></li>
+                                        <li><a class="dropdown-item"
+                                                href="{{ route('city.index') }}">@lang('nav.manage_cities')</a></li>
                                     </ul>
                                 </li>
                             @endif
@@ -79,23 +83,41 @@
 
                     <!-- Sezione login -->
                     <ul class="navbar-nav">
+                        <li class="nav-item dropdown ms-1 ">
+
+                            <a class="ps-1 nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                @lang('nav.languages')
+                            </a>
+                            @if(isset($login))
+                                <ul class="dropdown-menu mb-2 dropdown-menu-end">
+                            @else
+                                    <ul class="dropdown-menu mb-2">
+                                @endif
+                                    <li><a class="dropdown-item"
+                                            href="{{ route('language.set', ['language' => 'it']) }}">🇮🇹
+                                            Italiano</a>
+                                    </li>
+                                    <li><a class="dropdown-item"
+                                            href="{{ route('language.set', ['language' => 'en']) }}">🇺🇸
+                                            English</a>
+                                    </li>
+                                </ul>
+                        </li>
                         @if (auth()->check())
                             <li class="nav-item dropdown">
-                                <a class="btn ps-1 nav-link" href="#" role="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                                <a class="nav-link " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-person-circle"></i>
                                     {{ auth()->user()->name }}
                                     @if (auth()->user()->role === 'admin')
-                                        (Amministratore)
+                                        (@lang('nav.administrator'))
                                     @endif
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item p-2" href="{{ route('user.panel') }}"><i class="bi bi-person-gear"></i> Gestisci</a>
-                                    </li>
                                     <li>
-                                        <label for="logoutSubmit" class="dropdown-item p-2"><i
+                                        <label for="logoutSubmit" class="btn nav-link w-100"><i
                                                 class="bi bi-box-arrow-left"></i>
-                                            Logout</label>
+                                            @lang('nav.logout')</label>
                                     </li>
                                 </ul>
 
@@ -109,9 +131,9 @@
                                 @if(!isset($login))
                                     <a href="{{route('login')}}" class="btn btn-primary m-e2"><i
                                             class="bi bi-person-circle"></i>
-                                        Login</a>
+                                        @lang('nav.login')</a>
                                     <a href="{{route('register')}}" class="btn btn-success"><i class="bi bi-person-circle"></i>
-                                        Register</a>
+                                        @lang('nav.register')</a>
                                 @endif
                             </li>
                         @endif

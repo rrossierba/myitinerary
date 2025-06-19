@@ -1,11 +1,13 @@
 @extends('layouts.master')
 
-@section('title', 'Città')
+@section('title')
+@lang('city.city')
+@endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item">Home</li>
-    <li class="breadcrumb-item">Admin</li>
-    <li class="breadcrumb-item active">Città</li>
+    <li class="breadcrumb-item">@lang('nav.home')</li>
+    <li class="breadcrumb-item">@lang('nav.admin')</li>
+    <li class="breadcrumb-item active">@lang('nav.city')</li>
 @endsection
 
 @section('scripts')
@@ -27,7 +29,7 @@
                 const deleteConfirmUrl = CITY_DESTROY_CONFIRM_BASE_URL.replace(':cityId', city.id);
 
                 $('#cityTableBody').append(
-                    `<tr><td>${city.name}</td><td>${city.region}</td><td>${city.state}</td><td><a class="btn btn-primary" href="${editUrl}"><i class="bi bi-pencil-square"></i> Modifica</a></td><td><a class="btn btn-danger" href="${deleteConfirmUrl}"><i class="bi bi-trash"></i> Elimina</a></td></tr>`
+                    `<tr><td>${city.name}</td><td>${city.region}</td><td>${city.state}</td><td><a class="btn btn-primary" href="${editUrl}"><i class="bi bi-pencil-square"></i> Modifica</a></td><td><a class="btn btn-danger" href="${deleteConfirmUrl}"><i class="bi bi-trash"></i> @lang('city.delete'))</a></td></tr>`
                 );
             }
 
@@ -68,14 +70,14 @@
 
             // event listener
             $('#stateSelect').on('change', function () {
-                $('#regionSelect').html('<option id="initialRegionDisabled" value="" disabled selected>Seleziona uno stato</option>')
+                $('#regionSelect').html('<option id="initialRegionDisabled" value="" disabled selected>@lang('city.select_region')</option>')
                 const state = $(this).val();
                 $.ajax({
                     url: '{{ route('api.regions.state') }}',
                     data: { state: state },
                     async: true,
                     success: function (data) {
-                        $('#initialRegionDisabled').html('Seleziona una regione');
+                        $('#initialRegionDisabled').html('@lang('city.select_region')');
                         $('#regionSelect').removeAttr('disabled');
 
                         data.forEach(region => {
@@ -159,18 +161,18 @@
         <div class="col-4">
             <a class="btn btn-success w-100" href="{{ route('city.create') }}">
                 <i class="bi bi-database-add"></i>
-                Aggiungi città
+                @lang('city.add_city')
             </a>
         </div>
     </div>
 
-    <h2>Cerca città</h2>
+    <h2>@lang('city.search_city')</h2>
     <div class="row g-2 mb-2">
         <div class="col-6">
             <div class="d-flex align-items-center">
-                <label for="stateSelect" class="p-2 text-secondary">Stato</label>
+                <label for="stateSelect" class="p-2 text-secondary">@lang('city.state')</label>
                 <select name="state" id="stateSelect" class="form-control">
-                    <option value="" disabled selected>Seleziona uno stato</option>
+                    <option value="" disabled selected>@lang('city.select_state')</option>
                     @foreach ($states as $state)
                         <option value="{{ $state }}">{{ $state }}</option>
                     @endforeach
@@ -179,16 +181,16 @@
         </div>
         <div class="col-6">
             <div class="d-flex">
-                <label for="regionSelect" class="p-2 text-secondary">Regione</label>
+                <label for="regionSelect" class="p-2 text-secondary">@lang('city.region')</label>
                 <select name="state" id="regionSelect" class="form-control" disabled>
-                    <option id="initialRegionDisabled" value="" disabled selected>Seleziona uno stato</option>
+                    <option id="initialRegionDisabled" value="" disabled selected>@lang('city.select_state')</option>
                 </select>
             </div>
         </div>
         <div class="col-12">
             <div class="form-floating d-none" id="searchBox">
                 <input type="text" id="searchCity" class="form-control" placeholder="Cerca">
-                <label for="searchCity">Cerca</label>
+                <label for="searchCity">@lang('city.search')</label>
             </div>
         </div>
     </div>
@@ -205,9 +207,9 @@
                     @endphp
                     @foreach($values as $val)
                         @if($val == $selected)
-                            <option $ue="{{ $val }}" selected>{{ $val }} città per pagina</option>
+                            <option $ue="{{ $val }}" selected>{{ $val }} @lang('city.city_per_page')</option>
                         @else
-                            <option $ue="{{ $val }}">{{ $val }} città per pagina</option>
+                            <option $ue="{{ $val }}">{{ $val }} @lang('city.city_per_page')</option>
                         @endif
                     @endforeach
                 </select>
@@ -224,9 +226,9 @@
                 <col width='15%'>
                 <thead>
                     <tr>
-                        <th>Nome</th>
-                        <th>Regione</th>
-                        <th>Stato</th>
+                        <th>@lang('city.name')</th>
+                        <th>@lang('city.region')</th>
+                        <th>@lang('city.state')</th>
                         <th></th>
                         <th></th>
                     </tr>

@@ -1,10 +1,12 @@
 @extends('layouts.master')
 
-@section('title', 'Ricerca Itinerario')
+@section('title')
+    @lang('nav.search_itinerary')
+@endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item">Home</li>
-    <li class="breadcrumb-item active">Cerca itinerario</li>
+    <li class="breadcrumb-item">@lang('nav.home')</li>
+    <li class="breadcrumb-item active">@lang('nav.search_itinerary')</li>
 @endsection
 
 @section('scripts')
@@ -36,7 +38,7 @@
                 <!-- Titolo -->
                 <h4 class="mb-3 text-center">
                     <i class="bi bi-search me-2 text-success"></i>
-                    Inserisci il titolo di un itinerario, o una città
+                    @lang('nav.search_message')
                 </h4>
 
                 <!-- Form ricerca -->
@@ -45,12 +47,12 @@
                     <div class="form-floating mb-3">
                         <input id="searchBox" type="text" name="query" class="form-control"
                             placeholder="Cerca un itinerario" autocomplete="off" required>
-                        <label for="searchBox">Cerca un itinerario</label>
+                        <label for="searchBox">@lang('nav.search_itinerary_box')</label>
                     </div>
 
                     <div class="d-grid">
                         <button id="searchSubmit" class="btn btn-success" type="submit">
-                            <i class="bi bi-search"></i> Cerca
+                            <i class="bi bi-search"></i> @lang('nav.search')
                         </button>
                     </div>
                 </form>
@@ -60,7 +62,7 @@
                     <hr class="my-4">
 
                     <div class="mb-2 text-muted">
-                        <i class="bi bi-clock-history me-1"></i> Ricerche recenti
+                        <i class="bi bi-clock-history me-1"></i> @lang('nav.recent_search')
                     </div>
 
                     <div class="list-group">
@@ -71,8 +73,6 @@
                         @endforeach
                     </div>
                 @endif
-
-
             </div>
         </div>
     </div>

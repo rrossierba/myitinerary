@@ -9,12 +9,12 @@
 @endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item">Home</li>
-    <li class="breadcrumb-item">Gestisci Itinerari</li>
+    <li class="breadcrumb-item">@lang('nav.home')</li>
+    <li class="breadcrumb-item">@lang('nav.manage_itineraries')</li>
     @if (isset($itinerary))
-        <li class="breadcrumb-item active">Modifica Itinerario</li>
+        <li class="breadcrumb-item active">@lang('nav.edit_itinerary')</li>
     @else
-        <li class="breadcrumb-item active">Crea Itinerario</li>
+        <li class="breadcrumb-item active">@lang('nav.create_itinerary')</li>
     @endif
 @endsection
 
@@ -79,8 +79,8 @@
                         data.forEach(city => {
                             $('#citySuggestions').append(
                                 `<li class="list-group-item list-group-item-action"> 
-                                    ${city.name} (${city.region}, ${city.state})
-                                    </li>`
+                                                ${city.name} (${city.region}, ${city.state})
+                                                </li>`
                             );
                         });
                     }
@@ -106,7 +106,7 @@
                 // controllo su titolo
                 if ($('input[name=inputTitle]').val().trim() === '') {
                     error = true;
-                    $('#invalidTitle').text('Il titolo è obbligatorio');
+                    $('#invalidTitle').text('@lang('itinerary.message_missing_title')');
                     $('#invalidTitle').show();
                     $('input[name=inputTitle]').addClass('invalidFocus');
                     $('input[name=inputTitle]').focus();
@@ -119,13 +119,13 @@
                 // controllo su città
                 if (!error && $('input[name=citySelector]').val().trim() === '') {
                     error = true;
-                    $('#invalidCity').text('La città è obbligatoria');
+                    $('#invalidCity').text('@lang('itinerary.message_missing_city')');
                     $('#invalidCity').show();
                     $('input[name=citySelector]').addClass('invalidFocus');
                     $('input[name=citySelector]').focus();
                 } else if (!error && !$('input[name=citySelector]').val().trim().match(/^(.+?) \((.+?), (.+?)\)$/)) {
                     error = true;
-                    $('#invalidCity').text('Forma errata: Nome (Regione, Stato)');
+                    $('#invalidCity').text('@lang('itinerary.message_format_city')');
                     $('#invalidCity').show();
                     $('input[name=citySelector]').addClass('invalidFocus');
                     $('input[name=citySelector]').focus();
@@ -146,7 +146,7 @@
                         },
                         success: function (data) {
                             if (data.error) {
-                                $('#errorModal .modal-body').html('Città definita in modo errato <br> La città deve essere scritta come Nome (Regione, Stato)');
+                                $('#errorModal .modal-body').html('@lang('itinerary.wrong_city_format') <br> @lang('itinerary.correct_city_form')');
                             }
                             if (data.exist == false) {
                                 $('#errorModal .modal-body').html(`Città “${$('input[name=citySelector]').val()}” non definita`);
@@ -167,13 +167,14 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="errorModalLabel">Errore</h5>
+                    <h5 class="modal-title" id="errorModalLabel">@lang('itinerary.error')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
                 </div>
                 <div class="modal-body">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                    <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">@lang('itinerary.close')</button>
                 </div>
             </div>
         </div>
@@ -192,18 +193,19 @@
                     <input type="submit" class="d-none" id="editSubmit">
                     @if (isset($itinerary))
                         <label for="editSubmit" id="submitButton" class="btn btn-success w-100" style="display: none"><i
-                                class="bi bi-floppy"></i> Salva</label>
+                                class="bi bi-floppy"></i> @lang('itinerary.save')</label>
                     @else
-                        <label for="editSubmit" class="btn btn-success w-100"><i class="bi bi-pencil"></i> Aggiungi
-                            tappe</label>
+                        <label for="editSubmit" class="btn btn-success w-100"><i class="bi bi-pencil"></i>
+                            @lang('itinerary.add_stages')</label>
                     @endif
                 </div>
                 <div class="col-lg-2 col-md-4 col-6">
                     @if (isset($itinerary))
                         <a href="{{ route('itinerary.index') }}" class="btn btn-danger w-100"><i class="bi bi-x-lg"></i>
-                            Annulla</a>
+                            @lang('itinerary.cancel')</a>
                     @else
-                        <a href="{{ route('home') }}" class="btn btn-danger w-100"><i class="bi bi-x-lg"></i> Annulla</a>
+                        <a href="{{ route('home') }}" class="btn btn-danger w-100"><i class="bi bi-x-lg"></i>
+                            @lang('itinerary.cancel')</a>
                     @endif
                 </div>
             </div>
@@ -214,11 +216,12 @@
                     <div class="form-floating">
                         @if (isset($itinerary))
                             <input type="text" id="inputTitle" name="inputTitle" value="{{ $itinerary->title }}"
-                                class="form-control" placeholder="Titolo">
+                                class="form-control" placeholder="@lang('itinerary.title')">
                         @else
-                            <input type="text" id="inputTitle" name="inputTitle" placeholder="Titolo" class="form-control">
+                            <input type="text" id="inputTitle" name="inputTitle" placeholder="@lang('itinerary.title')"
+                                class="form-control">
                         @endif
-                        <label for="inputTitle" class="col-form-label">Titolo</label>
+                        <label for="inputTitle" class="col-form-label">@lang('itinerary.title')</label>
                         <div class="alert alert-danger" id="invalidTitle" style="display: none;"></div>
                     </div>
                 </div>
@@ -230,13 +233,13 @@
                     <div class="form-floating mt-1">
                         @if (isset($itinerary))
                             <input type="text" class="form-control w-100" autocomplete="off" name="citySelector"
-                                placeholder="Inserisci una città" id="cityInput"
+                                placeholder="@lang('itinerary.city')" id="cityInput"
                                 value="{{ $itinerary->city->name }} ({{ $itinerary->city->region }}, {{ $itinerary->city->state }})">
                         @else
                             <input type="text" class="form-control w-100" id="cityInput" autocomplete="off" name="citySelector"
-                                placeholder="Inserisci una città">
+                                placeholder="@lang('itinerary.city')">
                         @endif
-                        <label for="inserCity" class="form-label">Seleziona la Città</label>
+                        <label for="inserCity" class="form-label">@lang('itinerary.city')</label>
                         <div class="alert alert-danger" id="invalidCity" style="display: none;"></div>
                     </div>
                     <ul id="citySuggestions" class="list-group position-absolute" style="z-index: 1000;"></ul>
@@ -256,9 +259,9 @@
                                     value="private" {{ $selected === 'private' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="visibilityCheckbox">
                                     @if(isset($itinerary))
-                                        Privato
+                                        @lang('itinerary.private')
                                     @else
-                                        Rendere l'itinerario privato
+                                        @lang('itinerary.private_create')
                                     @endif
                                 </label>
                             </div>
@@ -271,7 +274,7 @@
 
         @if (isset($itinerary->stages))
             @if ($itinerary->stages->count() > 0)
-                <h3>Modifica tappe</h3>
+                <h3>@lang('itinerary.edit_stages')</h3>
                 <ul class="list-group">
                     @foreach ($itinerary->stages as $stage)
                         <li class="list-group-item">
@@ -280,18 +283,18 @@
                                     {{ $stage->location }}
                                 </div>
                                 <div class="col-lg-2 d-lg-block d-none">
-                                    Prezzo: {{ $stage->cost }} €
+                                    @lang('itinerary.price'): {{ $stage->cost }} €
                                 </div>
                                 <div class="col-lg-2 d-lg-block d-none">
-                                    Durata: {{ $stage->duration }} min.
+                                @lang('itinerary.duration'): {{ $stage->duration }} @lang('itinerary.minutes')
                                 </div>
                                 <div class="col-lg-2 col-3">
                                     <a href="{{ route('stage.edit', ['stage' => $stage]) }}" class="btn btn-primary mb-2 w-100"><i
-                                            class="bi bi-pencil"></i> Modifica</a>
+                                            class="bi bi-pencil"></i> @lang('itinerary.modify')</a>
                                 </div>
                                 <div class="col-lg-2 col-3">
                                     <a href="{{ route('stage.destroy.confirm', ['stage' => $stage]) }}"
-                                        class="btn btn-danger mb-2 w-100"><i class="bi bi-trash"></i> Elimina</a>
+                                        class="btn btn-danger mb-2 w-100"><i class="bi bi-trash"></i> @lang('itinerary.delete')</a>
                                 </div>
                             </div>
                         </li>
@@ -301,7 +304,7 @@
             <div class="row justify-content-center mt-2">
                 <div class="col-6">
                     <a href="{{ route('stage.create', ['itinerary' => $itinerary]) }}" class="btn btn-primary w-100"><i
-                            class="bi bi-plus"></i> Aggiungi tappa</a>
+                            class="bi bi-plus"></i> @lang('itinerary.add_stages')</a>
                 </div>
             </div>
         @endif

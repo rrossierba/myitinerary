@@ -3,10 +3,10 @@
 @section('title', 'Elimina Città')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item">Home</li>
-    <li class="breadcrumb-item">Admin</li>
-    <li class="breadcrumb-item">Città</li>
-    <li class="breadcrumb-item active">Elimina Città</li>
+<li class="breadcrumb-item">@lang('nav.home')</li>
+    <li class="breadcrumb-item">@lang('nav.admin')</li>
+    <li class="breadcrumb-item">@lang('nav.city')</li>
+    <li class="breadcrumb-item active">@lang('nav.delete_city')</li>
 @endsection
 
 @section('body')
@@ -16,11 +16,11 @@
             <div class="col-md-12">
                 <header>
                     <h2>
-                        Eliminare la città "{{ $city->name }}"
+                        @lang('city.delete_message') "{{ $city->name }}"
                     </h2>
                 </header>
                 <p class="confirm">
-                    Stai elmininando definitivamente la città. Confermare?
+                    @lang('city.delete_confirm_message')
                 </p>
             </div>
         </div>
@@ -33,10 +33,10 @@
             </form>
             <div class="col-6">
                 <a class="btn btn-secondary w-100" href="{{ url()->previous() }}"><i class="bi bi-box-arrow-left"></i>
-                    Annulla</a>
+                    @lang('city.cancel')</a>
             </div>
             <div class="col-6">
-                <label for="mySubmit" class="btn btn-danger w-100"><i class="bi bi-trash"></i> Elimina</label>
+                <label for="mySubmit" class="btn btn-danger w-100"><i class="bi bi-trash"></i> @lang('city.delete')</label>
             </div>
         </div>
     </div>

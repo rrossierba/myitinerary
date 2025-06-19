@@ -1,14 +1,16 @@
 @extends('layouts.master')
 
-@section('title', 'Itinerario')
+@section('title')
+    @lang('nav.itinerary')
+@endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item">Home</li>
+    <li class="breadcrumb-item">@lang('nav.home')</li>
     @if (auth()->check() && auth()->user()->can('owns', $itinerary))
-        <li class="breadcrumb-item">Gestisci Itinerari</li>
-        <li class="breadcrumb-item">I miei Itinerari</li>
+        <li class="breadcrumb-item">@lang('nav.manage_itineraries')</li>
+        <li class="breadcrumb-item">@lang('nav.my_itineraries')</li>
     @else
-        <li class="breadcrumb-item">Itinerari</li>
+        <li class="breadcrumb-item">@lang('nav.itineraries')</li>
     @endif
     <li class="breadcrumb-item active">{{ $itinerary->city->name }}</li>
 @endsection
@@ -39,12 +41,7 @@
                                 favourite_number = favourite_number = parseInt(favourite.text(), 10);
                                 favourite.text(favourite_number - 1)
 
-                            } else {
-                                console.warn('Errore nella rimozione (server ha risposto ma non deleted=true):', data);
                             }
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('Errore Ajax nella rimozione:', error);
                         }
                     });
                 }
@@ -74,12 +71,7 @@
                                 favourite_number = parseInt(favourite.text(), 10);
                                 favourite.text(favourite_number + 1)
 
-                            } else {
-                                console.warn('Errore nell\'aggiunta (server ha risposto ma non created=true):', data);
                             }
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('Errore Ajax nell\'aggiunta:', error);
                         }
                     });
                 }
@@ -104,58 +96,28 @@
                 <div class="card-body">
                     <h3 class="card-title">{{ $itinerary->title }}</h3>
                     <p>{{$itinerary->city->name}}</p>
-                    <p>Prezzo totale: {{ number_format($itinerary->stages->sum('cost'), 2, ',', '.') }} €</p>
-                    <p>Tappe: {{ $itinerary->stages->count() }}</p>
+                    <p>@lang('itinerary.total_price'): {{ number_format($itinerary->stages->sum('cost'), 2, ',', '.') }} €</p>
+                    <p>@lang('itinerary.stages'): {{ $itinerary->stages->count() }}</p>
                 </div>
             </div>
         </div>
 
-        <!-- <div class="col-lg-5 col-12">
-                                                <div id="carouselExampleIndicators" class="carousel slide">
-                                                    <div class="carousel-indicators">
-                                                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-                                                            aria-current="true" aria-label="Slide 1"></button>
-                                                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                                                            aria-label="Slide 2"></button>
-                                                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                                                            aria-label="Slide 3"></button>
-                                                    </div>
-                                                    <div class="carousel-inner">
-                                                        <div class="carousel-item active">
-                                                            <img src="/img/all-itineraries.jpg" class="d-block w-100" alt="...">
-                                                            <div class="carousel-caption d-none d-md-block">
-                                                                <p>Informazioni su tutti i viaggi</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="carousel-item">
-                                                            <img src="/img/search-itinerary.jpg" class="d-block w-100" alt="...">
-                                                        </div>
-                                                        <div class="carousel-item">
-                                                            <img src="/img/create-itinerary.jpg" class="d-block w-100" alt="...">
-                                                        </div>
-                                                    </div>
-                                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                                                        data-bs-slide="prev">
-                                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                        <span class="visually-hidden">Previous</span>
-                                                    </button>
-                                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                                                        data-bs-slide="next">
-                                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                        <span class="visually-hidden">Next</span>
-                                                    </button>
-                                                </div>
-                                            </div> -->
-
         <div class="col-lg-6 col-md-12 col-sm-12">
             <div class="card" style="height:100%">
                 <div class="card-body">
-                    <h5 class="mb-3">Dettagli itinerario</h5>
-                    <p><strong>Salvataggi:</strong> <span id="favouriteNumber">{{ $itinerary->favourites->count()}}</span>
+                    <h5 class="mb-3">@lang('itinerary.itinerary_detail')</h5>
+                    <p><strong>@lang('itinerary.favourites'):</strong> <span
+                            id="favouriteNumber">{{ $itinerary->favourites->count()}}</span>
                         <i class="text-danger bi bi-heart-fill"></i>
                     </p>
-                    <p><strong>Creato da:</strong> {{ $itinerary->user->name}}</p>
-                    <p><strong>Visibilità:</strong> {{ $itinerary->visibility }}</p>
+                    <p><strong>@lang('itinerary.created_by'):</strong> {{ $itinerary->user->name}}</p>
+                    <p><strong>@lang('itinerary.visibility'):</strong>
+                        @if($itinerary->visibility->value == 'public')
+                            @lang('itinerary.public')
+                        @else
+                            @lang('itinerary.private')
+                        @endif
+                    </p>
 
                     <!-- bottoni -->
                     @if (auth()->check())
@@ -163,19 +125,19 @@
                         </hr>
                         @if (auth()->user()->id == $itinerary->user->id)
                             <a href="{{ route('itinerary.edit', ['itinerary' => $itinerary->id]) }}"
-                                class="btn btn-primary w-100 mb-2">Edit</a>
+                                class="btn btn-primary w-100 mb-2"><i class="bi bi-pencil"></i> @lang('itinerary.edit')</a>
                             <a href="{{ route('itinerary.destroy.confirm', ['itinerary' => $itinerary]) }}"
-                                class="btn btn-danger w-100 mb-2">Elimina</a>
+                                class="btn btn-danger w-100 mb-2"><i class="bi bi-trash"></i> @lang('itinerary.delete')</a>
                         @else
                             @if ($itinerary->isFavouriteByUser(auth()->id()))
                                 <button class="btn btn-secondary w-100 mb-2 saved" itineraryid="{{ $itinerary->id }}">
                                     <i class="bi bi-check-lg"></i>
-                                    Salvato
+                                    @lang('itinerary.saved')
                                 </button>
                             @else
                                 <button class="btn btn-outline-secondary w-100 mb-2 toSave" itineraryid="{{ $itinerary->id }}">
                                     <i class="bi bi-bookmark"></i>
-                                    Salva
+                                    @lang('itinerary.save')
                                 </button>
                             @endif
                         @endif
@@ -188,7 +150,7 @@
     <!-- tappe -->
     <div class="row">
         @if (count($itinerary->stages) > 0)
-            <h4>Tappe</h4>
+            <h4>@lang('itinerary.stages')</h4>
             <div class="accordion" id="stagesAccordion">
                 @foreach ($itinerary->stages as $stage)
                     <div class="accordion-item">
@@ -201,10 +163,10 @@
                         </h2>
                         <div id="collapse{{ $stage->id }}" class="accordion-collapse collapse" data-bs-parent="#stagesAccordion">
                             <div class="accordion-body">
-                                <p><strong>Descrizione</strong><br>
+                                <p><strong>@lang('itinerary.description')</strong><br>
                                     {{ $stage->description }}</p>
-                                <p><strong>Prezzo</strong>: {{ $stage->cost }} €</p>
-                                <p><strong>Durata</strong>: {{ $stage->duration }} minuti</p>
+                                <p><strong>@lang('itinerary.price')</strong>: {{ $stage->cost }} €</p>
+                                <p><strong>@lang('itinerary.duration')</strong>: {{ $stage->duration }} @lang('itinerary.minutes')</p>
                             </div>
                         </div>
                     </div>

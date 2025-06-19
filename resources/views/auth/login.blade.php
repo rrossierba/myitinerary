@@ -9,29 +9,29 @@
                 @csrf
 
                 <div class="form-floating mb-3">
-                    <input type="email" name="email" class="form-control" id="floatingInput" placeholder="Email Address">
-                    <label for="floatingInput">Email address</label>
+                    <input type="email" name="email" class="form-control" id="floatingInput" placeholder="@lang('passwords.email_address')">
+                    <label for="floatingInput">@lang('passwords.email_address')</label>
                 </div>
                 <div class="form-floating mb-3">
                     <input type="password" class="form-control" name="password" id="floatingPassword"
-                        placeholder="Password">
-                    <label for="floatingPassword">Password</label>
+                        placeholder="@lang('passwords.password')">
+                    <label for="floatingPassword">@lang('passwords.password')</label>
                 </div>
 
                 @if ($errors->has('email'))
                     <div class="alert alert-danger">
-                        Le credenziali non sono valide. Riprova.
+                        @lang('passwords.wrong_credentials')
                     </div>
                 @endif
 
                 <div class="form-group text-center mb-3">
-                    <label for="login-submit" class="btn btn-primary w-100"><i class="bi bi-door-open"></i> Login</label>
+                    <label for="login-submit" class="btn btn-primary w-100"><i class="bi bi-door-open"></i> @lang('passwords.login')</label>
                     <input id="login-submit" class="d-none" type="submit" value="Login">
                 </div>
             </form>
             <hr>
             </hr>
-            <p class="text-center">Non hai un account? <a href="{{route('register')}}">Register</a></p>
+            <p class="text-center">@lang('passwords.login_redirect')<a href="{{route('register')}}"> @lang('passwords.register')</a></p>
         </div>
         <div class="col-12 col-lg-3 d-none d-lg-block">
             <img src="https://colorlib.com/etc/regform/colorlib-regform-7/images/signin-image.jpg" alt="">
