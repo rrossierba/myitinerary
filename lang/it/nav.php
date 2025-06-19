@@ -30,7 +30,7 @@ return [
     'logout'=>'Logout',
     'login'=>'Login',
     'register'=>'Registrati',
-    'languages'=>'Lingua',
+    'languages'=>'Lingua 🇮🇹',
 
     // search
     'results_for'=>'Risultati per',
@@ -47,5 +47,9 @@ return [
     'create_home_message'=>'Crea gli itinerari di tuoi viaggi personalizzati',
     'home_share'=>'Condividi e conserva',
     'share_home_message'=>'Condividi informazioni e itinerari dei tuoi viaggi',
-
+    
+    // stages
+    'delete_stage'=>'Elimina Tappa',
+    'edit_stage'=>'Modifica Tappa',
+    'create_stage'=>'Aggiungi Tappa'
 ];

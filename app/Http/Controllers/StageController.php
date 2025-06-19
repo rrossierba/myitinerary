@@ -9,43 +9,11 @@ use Illuminate\Support\Facades\Redirect;
 
 class StageController extends Controller
 {
-    // public function add($itinerary)
-    // {
-    //     $itinerary_obj = Itinerary::find($itinerary);
-    //     $this->authorize('isOwner', arguments: $itinerary_obj);
-    //     return view('stage.editStage')
-    //         ->with('itinerary', $itinerary_obj);
-    // }
-
-    // public function store2(Request $request)
-    // {
-    //     $request->validate([
-    //         'itineraryId' => ['required', 'integer'],
-    //         'inputLocation' => ['required', 'string', 'max:255'],
-    //         'textDescription' => ['nullable', 'string'],
-    //         'inputDuration' => ['nullable', 'integer'],
-    //         'cost' => ['nullable', 'numeric']
-    //     ]);
-
-    //     $itinerary = $request->input('itineraryId');
-    //     $this->authorize('isOwner', Itinerary::find($itinerary));
-
-    //     $stage = Stage::create([
-    //         'location' => $request->input('inputLocation'),
-    //         'description' => $request->input('textDescription'),
-    //         'duration' => $request->input('inputDuration') != null ? $request->input('inputDuration') : 0,
-    //         'cost' => $request->input('inputPrice') != null ? $request->input('inputPrice') : 0.0,
-    //         'itinerary_id' => $itinerary,
-    //     ]);
-
-    //     return Redirect::to(route('itinerary.edit', ['itinerary'=>$stage->itinerary]));
-
-    // }
 
     public function create(Itinerary $itinerary)
     {
         $this->authorize('isOwner', $itinerary);
-        return view('stage.editStage');
+        return view('stage.editStage')->with('itinerary', $itinerary);
     }
 
     public function store(Request $request, Itinerary $itinerary)

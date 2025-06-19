@@ -30,7 +30,7 @@ return [
     'logout' => 'Logout',
     'login' => 'Login',
     'register' => 'Register',
-    'languages' => 'Language',
+    'languages' => 'Language 🇺🇸',
 
     // search
     'results_for' => 'Results for',
@@ -47,4 +47,9 @@ return [
     'create_home_message' => 'Create your personalized travel itineraries',
     'home_share' => 'Share and Save',
     'share_home_message' => 'Share information and your travel itineraries',
+
+    // stages
+    'delete_stage'=>'Delete Stage',
+    'edit_stage'=>'Edit Stage',
+    'create_stage'=>'Create Stage'
 ];

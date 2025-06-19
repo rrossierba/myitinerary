@@ -2,9 +2,9 @@
 
 @section('title')
     @if (isset($itinerary))
-        Modifica Itinerario
+        @lang('nav.edit_itinerary')
     @else
-        Crea Itinerario
+    @lang('nav.create_itinerary')
     @endif
 @endsection
 

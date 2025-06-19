@@ -2,21 +2,21 @@
 
 @section ('title')
     @if(isset($stage))
-        Modifica Tappa
+        @lang('nav.edit_stage')
     @else
-        Aggiungi Tappe
+        @lang('nav.create_stage')
     @endif
 @endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item">Home</li>
-    <li class="breadcrumb-item">Gestisci Itinerari</li>
+    <li class="breadcrumb-item">@lang('nav.home')</li>
+    <li class="breadcrumb-item">@lang('nav.manage_itineraries')</li>
     @if (isset($stage))
         <li class="breadcrumb-item">{{ $stage->itinerary->title }}</li>
-        <li class="breadcrumb-item active">Modifica Tappa</li>
+        <li class="breadcrumb-item active">@lang('nav.edit_stage')</li>
     @else
         <li class="breadcrumb-item">{{ $itinerary->title }}</li>
-        <li class="breadcrumb-item active">Aggiungi Tappe</li>
+        <li class="breadcrumb-item active">@lang('nav.create_stage')</li>
     @endif
 @endsection
 
@@ -37,12 +37,12 @@
                         ($('#inputDuration').val() == initialValues[2]) &&
                         ($('#textDescription').val().trim() == initialValues[3]));
                     return changed
-                    
+
                 };
                 fields = ['#inputLocation', '#inputPrice', '#inputDuration', '#textDescription'];
                 fields.forEach(field => {
                     $(field).on('input', function () {
-                        if(isChanged())
+                        if (isChanged())
                             $('#submitButton').show();
                         else
                             $('#submitButton').hide();
@@ -78,16 +78,16 @@
             @csrf
             <div class="row justify-content-end mb-2">
                 <div class="col-lg-2 col-md-4 col-6">
-                <input type="submit" name="submit" id="stageSubmit" class="d-none">
+                    <input type="submit" name="submit" id="stageSubmit" class="d-none">
                     @if(isset($stage))
                         <label for="stageSubmit" class="btn btn-success w-100" id="submitButton" style="display: none"><i
-                                class="bi bi-floppy"></i> Modifica</label>
+                                class="bi bi-floppy"></i> @lang('stage.modify')</label>
                     @else
-                        <label for="stageSubmit" class="btn btn-success w-100"><i class="bi bi-floppy"></i> Salva</label>
+                        <label for="stageSubmit" class="btn btn-success w-100"><i class="bi bi-floppy"></i> @lang('stage.save')</label>
                     @endif
                 </div>
                 <div class="col-lg-2 col-md-4 col-6">
-                    <a href="{{ url()->previous() }}" class="btn btn-danger w-100"><i class="bi bi-x-lg"></i> Annulla</a>
+                    <a href="{{ url()->previous() }}" class="btn btn-danger w-100"><i class="bi bi-x-lg"></i> @lang('stage.cancel')</a>
                 </div>
             </div>
             <div id="stageContainer">
@@ -99,12 +99,12 @@
                                     <div class="form-floating mb-3">
                                         @if (isset($stage))
                                             <input type="text" class="form-control" id="inputLocation" name="inputLocation"
-                                                placeholder="Luogo" value="{{ $stage->location }}" required>
+                                                placeholder="@lang('stage.location')" value="{{ $stage->location }}" required>
                                         @else
                                             <input type="text" class="form-control" id="inputLocation" name="inputLocation[]"
-                                                placeholder="Luogo" required>
+                                                placeholder="@lang('stage.location')" required>
                                         @endif
-                                        <label for="inputLocation">Luogo</label>
+                                        <label for="inputLocation">@lang('stage.location')</label>
                                     </div>
                                     <div class="row">
                                         <div class="col">
@@ -112,12 +112,12 @@
                                                 @if (isset($stage))
                                                     <input type="number" id="inputDuration" name="inputDuration" min="0"
                                                         max="1000" class="form-control" value="{{ $stage->duration }}"
-                                                        placeholder="Durata (min)">
+                                                        placeholder="@lang('stage.duration') (@lang('stage.minutes'))">
                                                 @else
                                                     <input type="number" id="inputDuration" name="inputDuration[]" min="0"
-                                                        max="1000" class="form-control" placeholder="Durata (min)">
+                                                        max="1000" class="form-control" placeholder="@lang('stage.duration') (@lang('stage.minutes'))">
                                                 @endif
-                                                <label for="inputDuration">Durata (min)</label>
+                                                <label for="inputDuration">@lang('stage.duration') (@lang('stage.minutes'))</label>
                                             </div>
                                         </div>
                                         <div class="col">
@@ -125,12 +125,12 @@
                                                 @if (isset($stage))
                                                     <input type="number" id="inputPrice" name="inputPrice" min="0" max="1000"
                                                         class="form-control" step="0.01" value="{{ $stage->cost }}"
-                                                        placeholder="Prezzo">
+                                                        placeholder="@lang('stage.price')">
                                                 @else
                                                     <input type="number" id="inputPrice" name="inputPrice[]" min="0" max="1000"
-                                                        class="form-control" step="0.01" placeholder="Prezzo">
+                                                        class="form-control" step="0.01" placeholder="@lang('stage.price')">
                                                 @endif
-                                                <label for="inputPrice">Prezzo</label>
+                                                <label for="inputPrice">@lang('stage.price')</label>
                                             </div>
                                         </div>
                                     </div>
@@ -138,18 +138,18 @@
                                         @if (isset($stage))
                                             <textarea name="textDescription" id="textDescription" style="height:auto"
                                                 class="form-control"
-                                                placeholder="Descrizione">{{ $stage->description }}</textarea>
+                                                placeholder="@lang('stage.description')">{{ $stage->description }}</textarea>
                                         @else
                                             <textarea name="textDescription[]" id="textDescription" rows="4"
-                                                class="form-control" placeholder="Descrizione"></textarea>
+                                                class="form-control" placeholder="@lang('stage.description')"></textarea>
                                         @endif
-                                        <label for="textDescription">Descrizione</label>
+                                        <label for="textDescription">@lang('stage.description')</label>
                                     </div>
                                 </div>
                                 @if(!isset($stage))
                                     <div class="text-end p-1">
                                         <button type="button" class="btn btn-sm btn-danger removeStageBtn d-none">
-                                            <i class="bi bi-trash"></i> Rimuovi tappa
+                                            <i class="bi bi-trash"></i> @lang('stage.remove_stage')
                                         </button>
                                     </div>
                                 @endif
@@ -164,7 +164,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-3 col-md-6 col-8">
                     <button class="btn btn-primary w-100" id="addStage">
-                        <i class="bi bi-plus"></i> Altra tappa
+                        <i class="bi bi-plus"></i> @lang('stage.add_stage')
                     </button>
                 </div>
             </div>
