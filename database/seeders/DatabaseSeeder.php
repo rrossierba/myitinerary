@@ -11,6 +11,7 @@ use App\Models\Itinerary;
 use File;
 use Hash;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -41,7 +42,7 @@ class DatabaseSeeder extends Seeder
     }
 
     private function seedItalianCities(){
-        $json = File::get(database_path('data/comuni.json'));
+        $json = Storage::get('cities_population/comuni.json');
         $data = json_decode($json, true);
 
         foreach ($data as $city){
