@@ -9,6 +9,13 @@
     background-color: #f0f0f0;
 }
 
+.logout{
+    color:red;
+}
+.logout:hover{
+    color:red;
+}
+
 /* Search form */
 .search-form {
     transition: all 0.3s ease;

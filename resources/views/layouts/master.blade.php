@@ -115,7 +115,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li>
-                                        <label for="logoutSubmit" class="btn nav-link w-100"><i
+                                        <label for="logoutSubmit" class="btn nav-link w-100 logout"><i
                                                 class="bi bi-box-arrow-left"></i>
                                             @lang('nav.logout')</label>
                                     </li>
