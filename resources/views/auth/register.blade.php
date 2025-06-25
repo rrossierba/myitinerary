@@ -17,21 +17,21 @@
                     if (value === '') {
                         error = true;
                         $(`#${errorId}`).text(emptyMessage);
-                        $inputField.addClass('invalidFocus').focus();
+                        $inputField.addClass('is-invalid').focus();
                         $(`#${errorId}`).show();
                     } else if (!error && regex && !regex.test(value)) {
                         error = true;
                         $(`#${errorId}`).text(formatMessage);
-                        $inputField.addClass('invalidFocus').focus();
+                        $inputField.addClass('is-invalid').focus();
                         $(`#${errorId}`).show();
                     } else if (!error && equalsTo && value !== equalsTo) {
                         error = true;
                         $(`#${errorId}`).text(notEqualMessage);
-                        $inputField.addClass('invalidFocus').focus();
+                        $inputField.addClass('is-invalid').focus();
                         $(`#${errorId}`).show();
                     }
                     else {
-                        $inputField.removeClass('invalidFocus');
+                        $inputField.removeClass('is-invalid');
                         $(`#${errorId}`).hide();
                         $(`#${errorId}`).empty();
                     }

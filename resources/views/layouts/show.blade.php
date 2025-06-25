@@ -88,25 +88,27 @@
                     });
                 });
             @endif
-                });
+                    });
     </script>
 @endsection
 
 @section('body')
     @if(isset($search))
         {{ $itineraries->links('pagination.custom-bootstrap-5') }}
-    @else
-        <div class="row">
-            <div class="input-group mb-3">
-                <div class="form-floating" id="searchBox">
-                    <input type="text" id="searchItinerary" class="form-control" placeholder="@lang('nav.search')">
-                    <label for="searchItinerary">@lang('nav.search')</label>
-                </div>
-            </div>
-        </div>
     @endif
 
     @if(count($itineraries) > 0)
+        @if (!isset($search))
+            <div class="row">
+                <div class="input-group mb-3">
+                    <div class="form-floating" id="searchBox">
+                        <input type="text" id="searchItinerary" class="form-control" placeholder="@lang('nav.search')">
+                        <label for="searchItinerary">@lang('nav.search')</label>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         @foreach ($itineraries as $itinerary)
             <div class="itinerary-container" title="{{ $itinerary->title }}" city="{{ $itinerary->city->name }}">
                 <div class="card mb-2 shadow-sm rounded p-3 mb-3">
@@ -189,6 +191,6 @@
             </div>
         @endforeach
     @else
-        <p class="text-center">@lang('itinerary.public').</p>
+        <p class="text-center">@lang('itinerary.no_itinerary_to_show').</p>
     @endif
 @endsection

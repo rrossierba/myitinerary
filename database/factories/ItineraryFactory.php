@@ -22,7 +22,7 @@ class ItineraryFactory extends Factory
         return [
             'city_id' => $city_id,
             'title' => sprintf('%s in %s', $this->faker->sentence(3), City::find(($city_id))->name),
-            'user_id' => User::inRandomOrder()->first()?->id ?? User::factory(),
+            'user_id' => User::where('role', '!=', 'admin')->inRandomOrder()->first()?->id ?? User::factory(),
             'visibility' => $this->faker->randomElement(['public', 'private']),
         ];
     }

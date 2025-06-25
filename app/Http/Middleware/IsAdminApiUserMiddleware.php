@@ -17,7 +17,7 @@ class IsAdminApiUserMiddleware
     {
         if ((!auth()->check())||(auth()->user()->role!='admin')) {
             return response()->json(
-            ['message' => 'Only administrators can access this page!'], 403);
+            ['message' => 'Only administrators can access this data!'], 403);
         }
         return $next($request);
     }

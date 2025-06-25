@@ -68,17 +68,17 @@
                         error = true;
                         $(field.errorId).text(field.errorMessage);
                         $(field.errorId).show();
-                        field.input.addClass('invalidFocus');
+                        field.input.addClass('is-invalid');
                         field.input.focus();
                     } else if (!error && !inputValue.trim().match(/^[A-Za-zÀ-ÖØ-öø-ÿ'’.\- ]+$/)) {
                         error = true;
                         $(field.errorId).text(formatErrorMessage);
                         $(field.errorId).show();
-                        field.input.addClass('invalidFocus');
+                        field.input.addClass('is-invalid');
                         field.input.focus();
                     }
                     else {
-                        field.input.removeClass('invalidFocus');
+                        field.input.removeClass('is-invalid');
                         $(field.errorId).empty();
                         $(field.errorId).hide()
                     }

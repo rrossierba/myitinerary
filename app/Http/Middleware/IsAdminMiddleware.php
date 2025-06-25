@@ -17,7 +17,7 @@ class IsAdminMiddleware
     {
         if ((!auth()->check())||(auth()->user()->role!='admin')) {
             return response()->view('errors.403', 
-            ['message' => 'Solo gli amministratori possono accedere a questa pagina!'], 403);
+            ['message' => 'Only administrators can access this page!'], 403);
         }
         return $next($request);
     }

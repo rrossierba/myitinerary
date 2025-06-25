@@ -108,10 +108,10 @@
                     error = true;
                     $('#invalidTitle').text('@lang('itinerary.message_missing_title')');
                     $('#invalidTitle').show();
-                    $('input[name=inputTitle]').addClass('invalidFocus');
+                    $('input[name=inputTitle]').addClass('is-invalid');
                     $('input[name=inputTitle]').focus();
                 } else {
-                    $('input[name=inputTitle]').removeClass('invalidFocus');
+                    $('input[name=inputTitle]').removeClass('is-invalid');
                     $('#invalidTitle').empty();
                     $('#invalidTitle').hide()
                 }
@@ -121,17 +121,17 @@
                     error = true;
                     $('#invalidCity').text('@lang('itinerary.message_missing_city')');
                     $('#invalidCity').show();
-                    $('input[name=citySelector]').addClass('invalidFocus');
+                    $('input[name=citySelector]').addClass('is-invalid');
                     $('input[name=citySelector]').focus();
                 } else if (!error && !$('input[name=citySelector]').val().trim().match(/^(.+?) \((.+?), (.+?)\)$/)) {
                     error = true;
                     $('#invalidCity').text('@lang('itinerary.message_format_city')');
                     $('#invalidCity').show();
-                    $('input[name=citySelector]').addClass('invalidFocus');
+                    $('input[name=citySelector]').addClass('is-invalid');
                     $('input[name=citySelector]').focus();
                 }
                 else {
-                    $('input[name=citySelector]').removeClass('invalidFocus');
+                    $('input[name=citySelector]').removeClass('is-invalid');
                     $('#invalidCity').empty();
                     $('#invalidCity').hide();
                 }
