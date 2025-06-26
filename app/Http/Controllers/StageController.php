@@ -9,49 +9,53 @@ use Illuminate\Support\Facades\Redirect;
 
 class StageController extends Controller
 {
-
     public function create(Itinerary $itinerary)
     {
         $this->authorize('isOwner', $itinerary);
         return view('stage.editStage')->with('itinerary', $itinerary);
     }
 
+    public function add(Itinerary $itinerary)
+    {
+        $this->authorize('isOwner', $itinerary);
+        return view('stage.editStage')->with('itinerary', $itinerary)->with('add', true);
+    }
+
     public function store(Request $request, Itinerary $itinerary)
     {
         $request->validate([
-            'inputLocation' => ['required','array'],
-            'inputLocation.*' => ['required','string'],
-            'inputPrice' => ['required','array'],
-            'inputPrice.*' => ['nullable','numeric','min:0'],
-            'inputDuration' => ['required','array'],
-            'inputDuration.*' => ['nullable','integer','min:0'],
-            'textDescription' => ['required','array'],
-            'textDescription.*' => ['nullable','string'],
+            'inputLocation' => ['required', 'array'],
+            'inputLocation.*' => ['required', 'string'],
+            'inputPrice' => ['required', 'array'],
+            'inputPrice.*' => ['nullable', 'numeric', 'min:0'],
+            'inputDuration' => ['required', 'array'],
+            'inputDuration.*' => ['nullable', 'integer', 'min:0'],
+            'textDescription' => ['required', 'array'],
+            'textDescription.*' => ['nullable', 'string'],
         ]);
 
         $locations = $request->input('inputLocation');
         $prices = $request->input('inputPrice');
         $durations = $request->input('inputDuration');
         $descriptions = $request->input('textDescription');
-        
-        $redirectToIndex = $itinerary->stages->count() == 0;
 
+        $redirectToIndex = $itinerary->stages->count() == 0;
 
         foreach ($locations as $index => $location) {
             Stage::create([
                 'itinerary_id' => $itinerary->id,
                 'location' => $location,
-                'cost' => $prices[$index] != null? $prices[$index]:0.0,
-                'duration' => $durations[$index] != null? $durations[$index]:0,
+                'cost' => $prices[$index] != null ? $prices[$index] : 0.0,
+                'duration' => $durations[$index] != null ? $durations[$index] : 0,
                 'description' => $descriptions[$index] ?? null,
             ]);
         }
-        
-        return $redirectToIndex? 
-        redirect()->route('itinerary.index'):
-        redirect()->route('itinerary.edit', compact('itinerary'));
+
+        return $redirectToIndex ?
+            redirect()->route('itinerary.index') :
+            redirect()->route('itinerary.edit', compact('itinerary'));
     }
-    
+
 
     public function edit(Stage $stage)
     {

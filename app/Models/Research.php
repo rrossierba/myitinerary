@@ -13,6 +13,11 @@ class Research extends Model
     protected $table = 'research';
 
     protected $fillble = [
-        'query_string'
+        'query_string',
+        'user_id'
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

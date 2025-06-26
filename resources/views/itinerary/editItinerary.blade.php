@@ -29,7 +29,6 @@
                     'input[name=visibility]'
                 ];
 
-                // Leggi i valori iniziali correttamente
                 const initialValues = fields.map((field) => {
                     const $el = $(field);
                     return $el.is(':checkbox') ? $el.prop('checked') : $el.val().trim();
@@ -149,7 +148,7 @@
                                 $('#errorModal .modal-body').html('@lang('itinerary.wrong_city_format') <br> @lang('itinerary.correct_city_form')');
                             }
                             if (data.exist == false) {
-                                $('#errorModal .modal-body').html(`Città “${$('input[name=citySelector]').val()}” non definita`);
+                                $('#errorModal .modal-body').html(`@lang('city.city') “${$('input[name=citySelector]').val()}” @lang('city.not_defined')`);
                                 var modal = new bootstrap.Modal(document.getElementById('errorModal'));
                                 modal.show();
                             } else
@@ -201,7 +200,7 @@
                 </div>
                 <div class="col-lg-2 col-md-4 col-6">
                     @if (isset($itinerary))
-                        <a href="{{ route('itinerary.index') }}" class="btn btn-danger w-100"><i class="bi bi-x-lg"></i>
+                        <a href="{{ route('itinerary.show', ['itinerary'=>$itinerary]) }}" class="btn btn-danger w-100"><i class="bi bi-x-lg"></i>
                             @lang('itinerary.cancel')</a>
                     @else
                         <a href="{{ route('home') }}" class="btn btn-danger w-100"><i class="bi bi-x-lg"></i>
@@ -303,7 +302,7 @@
             @endif
             <div class="row justify-content-center mt-2">
                 <div class="col-6">
-                    <a href="{{ route('stage.create', ['itinerary' => $itinerary]) }}" class="btn btn-primary w-100"><i
+                    <a href="{{ route('stage.add', ['itinerary' => $itinerary]) }}" class="btn btn-primary w-100"><i
                             class="bi bi-plus"></i> @lang('itinerary.add_stages')</a>
                 </div>
             </div>

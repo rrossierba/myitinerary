@@ -15,7 +15,7 @@ class SearchController extends Controller
         if (auth()->user() == null) {
             $history = [];
         } else {
-            $history = Research::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->limit(5)->get();
+            $history = auth()->user()->researches()->latest()->limit(5)->get();
         }
 
         return view('search.searchPage')
@@ -62,7 +62,3 @@ class SearchController extends Controller
     }
 
 }
-
-
-
-

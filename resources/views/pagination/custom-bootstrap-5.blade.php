@@ -1,6 +1,5 @@
 @if ($paginator->hasPages())
     <div class="row justify-content-center">
-        {{-- Paginazione desktop/tablet --}}
         <div class="col-12 d-none d-md-flex justify-content-center">
             <ul class="pagination justify-content-center">
                 {{-- Previous Page Link --}}
@@ -58,7 +57,6 @@
             </ul>
         </div>
 
-        {{-- Paginazione mobile --}}
         <div class="col-12 d-flex d-md-none justify-content-center">
             <ul class="pagination justify-content-center">
                 {{-- Previous --}}
@@ -89,7 +87,7 @@
             </ul>
         </div>
 
-        {{-- Info risultati desktop --}}
+        {{-- Info results --}}
         <div class="col-12 text-center">
             <p class="small text-muted">
                 {!! __('Showing') !!}

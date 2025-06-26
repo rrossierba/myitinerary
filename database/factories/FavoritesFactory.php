@@ -2,8 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Itinerary;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,12 +16,6 @@ class FavoritesFactory extends Factory
      */
     public function definition(): array
     {   
-        $user_id = User::inRandomOrder()->first()?->id ?? User::factory();
-        return [
-            'user_id' => $user_id,
-            'itinerary_id'=>Itinerary::where('visibility', 'public')
-            ->where('user_id', '!=', $user_id)
-            ->inRandomOrder()->first()?->id ?? Itinerary::factory(),
-        ];
+        return [];
     }
 }

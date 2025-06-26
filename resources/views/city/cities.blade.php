@@ -29,7 +29,7 @@
                 const deleteConfirmUrl = CITY_DESTROY_CONFIRM_BASE_URL.replace(':cityId', city.id);
 
                 $('#cityTableBody').append(
-                    `<tr><td>${city.name}</td><td>${city.region}</td><td>${city.state}</td><td><a class="btn btn-primary" href="${editUrl}"><i class="bi bi-pencil-square"></i> Modifica</a></td><td><a class="btn btn-danger" href="${deleteConfirmUrl}"><i class="bi bi-trash"></i> @lang('city.delete'))</a></td></tr>`
+                    `<tr><td>${city.name}</td><td>${city.region}</td><td>${city.state}</td><td><a class="btn btn-primary" href="${editUrl}"><i class="bi bi-pencil"></i> Modifica</a></td><td><a class="btn btn-danger" href="${deleteConfirmUrl}"><i class="bi bi-trash"></i> @lang('city.delete')</a></td></tr>`
                 );
             }
 
@@ -111,7 +111,7 @@
                         });
 
                         currentPage = 1;
-                        rowsPerPage = parseInt($("#rowsPerPage").val()); // Numero di righe per pagina
+                        rowsPerPage = parseInt($("#rowsPerPage").val());
                         $tableRows = $(".table tbody tr");
                         totalPages = Math.ceil($tableRows.length / rowsPerPage);
                         showPage(currentPage);
@@ -131,7 +131,7 @@
                 })
 
                 if ($(this).val() === '') {
-                    rowsPerPage = parseInt($("#rowsPerPage").val()); // Numero di righe per pagina
+                    rowsPerPage = parseInt($("#rowsPerPage").val());
                     $tableRows = $(".table tbody tr");
                     totalPages = Math.ceil($tableRows.length / rowsPerPage);
                     showPage(currentPage);
@@ -189,7 +189,7 @@
         </div>
         <div class="col-12">
             <div class="form-floating d-none" id="searchBox">
-                <input type="text" id="searchCity" class="form-control" placeholder="Cerca">
+                <input type="text" id="searchCity" class="form-control" placeholder="@lang('city.search')">
                 <label for="searchCity">@lang('city.search')</label>
             </div>
         </div>

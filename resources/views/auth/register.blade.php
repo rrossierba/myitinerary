@@ -9,7 +9,7 @@
         $(document).ready(function () {
             console.log('caricata')
             $('form[name=register]').submit(function (event) {
-                // Funzione di validazione generica
+                
                 function validateField({ inputName, regex = null, emptyMessage, formatMessage, errorId, equalsTo = null, notEqualMessage }) {
                     const $inputField = $(`input[name=${inputName}]`);
                     const value = $inputField.val().trim();
@@ -133,7 +133,7 @@
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="email" name="email" class="form-control" id="floatingPw" placeholder="@lang('passwords.email_address')">
+                    <input type="text" name="email" class="form-control" id="floatingPw" placeholder="@lang('passwords.email_address')">
                     <label for="floatingPw">@lang('passwords.email_address')</label>
                     <div class="alert alert-danger" id="errorMailDiv" style="display: none"></div>
                 </div>

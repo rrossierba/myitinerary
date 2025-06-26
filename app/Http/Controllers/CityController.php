@@ -47,14 +47,6 @@ class CityController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(City $city)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(City $city)
@@ -126,19 +118,24 @@ class CityController extends Controller
     }
 
     public function exist(Request $request){
-        $cityRegex = '/^([\p{L}\s]+) \(([\p{L}\s]+), ([\p{L}\s]+)\)$/u';
+        if($request->get('cityRegexString')!== null){
+            $cityRegex = '/^([\p{L}\s\'\.\-]+) \(([\p{L}\s\'\.\-]+), ([\p{L}\s\'\.\-]+)\)$/u';
+            
+            $request->validate([
+                'cityString'=>['required', 'regex:'.$cityRegex]
+            ]);
 
-        $request->validate([
-            'cityString'=>['required', 'regex:'.$cityRegex]
-        ]);
-
-        if($request->get('cityString')!== null){
             if (preg_match($cityRegex, $request->get('cityString'), $matches)) {
                 $name = trim($matches[1]);  
                 $region = trim($matches[2]);    
                 $state = trim($matches[3]);      
             }
         }else{
+            $request->validate([
+                'state'=>['required', 'string'],
+                'region'=>['required', 'string'],
+                'name'=>['required', 'string']
+            ]);
             $state = $request->get('state');
             $region = $request->get('region');
             $name = $request->get('name');

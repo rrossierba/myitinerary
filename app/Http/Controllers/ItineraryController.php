@@ -114,7 +114,7 @@ class ItineraryController extends Controller
     }
 
     private function findCity($city_string){
-        if (preg_match('/^([\p{L}\s]+) \(([\p{L}\s]+), ([\p{L}\s]+)\)$/u', $city_string, $matches)) {
+        if (preg_match('/^([\p{L}\s\'\.\-]+) \(([\p{L}\s\'\.\-]+), ([\p{L}\s\'\.\-]+)\)$/u', $city_string, $matches)) {
             $cityName = trim($matches[1]);  
             $cityRegion = trim($matches[2]);    
             $cityState = trim($matches[3]);      

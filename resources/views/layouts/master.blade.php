@@ -95,12 +95,12 @@
                                     <ul class="dropdown-menu mb-2">
                                 @endif
                                     <li><a class="dropdown-item"
-                                            href="{{ route('language.set', ['language' => 'it']) }}">🇮🇹
-                                            Italiano</a>
-                                    </li>
-                                    <li><a class="dropdown-item"
                                             href="{{ route('language.set', ['language' => 'en']) }}">🇺🇸
                                             English</a>
+                                    </li>
+                                    <li><a class="dropdown-item"
+                                            href="{{ route('language.set', ['language' => 'it']) }}">🇮🇹
+                                            Italiano</a>
                                     </li>
                                 </ul>
                         </li>
@@ -129,11 +129,11 @@
                         @else
                             <li>
                                 @if(!isset($login))
-                                    <a href="{{route('login')}}" class="btn btn-primary m-e2"><i
+                                    <a href="{{route('login')}}" class="btn btn-outline-secondary m-e2"><i
                                             class="bi bi-person-circle"></i>
                                         @lang('nav.login')</a>
-                                    <a href="{{route('register')}}" class="btn btn-success"><i class="bi bi-person-circle"></i>
-                                        @lang('nav.register')</a>
+                                    <!-- <a href="{{route('register')}}" class="btn btn-outline-secondary"><i class="bi bi-person-circle"></i>
+                                                @lang('nav.register')</a> -->
                                 @endif
                             </li>
                         @endif

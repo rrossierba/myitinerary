@@ -22,6 +22,7 @@ return [
     'missing_name_message'=>'Il nome è obbligatorio',
     'missing_region_message'=>'La regione è obbligatoria',
     'city_already_existing_message'=>'Città già esistente',
+    'not_defined'=> 'non definita',
     'save'=>'Salva',
     'modify'=>'Modifica',
 ];

@@ -40,6 +40,11 @@ class Itinerary extends Model
         return $this->hasMany(Favorites::class, 'itinerary_id', 'id');
     }
 
+    public function stages(){
+        return $this->hasMany(Stage::class,'itinerary_id', 'id');
+    }
+
+    // check for favourites
     public function isFavouriteByUser($user_id){
         return $this->favourites()
                 ->where('user_id', $user_id)
@@ -49,9 +54,5 @@ class Itinerary extends Model
     public function getFavouriteByUserId($user_id){
         return $this->favourites()
                 ->where('user_id', $user_id)->get()->first();
-    }
-
-    public function stages(){
-        return $this->hasMany(Stage::class,'itinerary_id', 'id');
     }
 }

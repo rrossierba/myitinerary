@@ -21,9 +21,9 @@ Route::middleware(['language'])->group(function () {
     Route::get('/search/results/{query}', [SearchController::class, 'search_results'])->name('search.results');
     
     // AJAX
-    Route::get('/API/cities/name', [CityController::class, 'search'])->name('api.city.name');
-    Route::get('/API/regions/state', [CityController::class, 'searchRegion'])->name('api.regions.state');
-    Route::get('/API/cities/regions', [CityController::class, 'searchCitiesByRegion'])->name('api.city.region');
+    Route::get('/ajax/cities/name', [CityController::class, 'search'])->name('api.city.name');
+    Route::get('/ajax/regions/state', [CityController::class, 'searchRegion'])->name('api.regions.state');
+    Route::get('/ajax/cities/regions', [CityController::class, 'searchCitiesByRegion'])->name('api.city.region');
     
     // itineraries
     Route::middleware(['auth', 'isRegisteredUser'])->group(function () {
@@ -33,13 +33,14 @@ Route::middleware(['language'])->group(function () {
         
         // favourites
         Route::get('/favourites', [FavoritesController::class, 'index'])->name('favourites.index');
-        Route::post('/API/favourites/add', [FavoritesController::class, 'store'])->name('favourites.add');
-        Route::delete('/API/favourites/destroy', [FavoritesController::class, 'destroy'])->name('favourites.remove');
+        Route::post('/ajax/favourites/add', [FavoritesController::class, 'store'])->name('favourites.add');
+        Route::delete('/ajax/favourites/destroy', [FavoritesController::class, 'destroy'])->name('favourites.remove');
     
         // stages
         Route::get('/stage/{stage}/destroy/confirm', [StageController::class, 'destroyConfirm'])->name('stage.destroy.confirm');
         Route::prefix('itinerary/{itinerary}')->group(function () {
             Route::get('stage/create', [StageController::class, 'create'])->name('stage.create');
+            Route::get('stage/add', [StageController::class, 'add'])->name('stage.add');
             Route::post('stage', [StageController::class, 'store'])->name('stage.store');
         });    
         Route::resource('stage', StageController::class)->except(['create', 'store']);
@@ -54,6 +55,6 @@ Route::middleware(['language'])->group(function () {
     });
     
     Route::middleware('auth')->group(function () {
-        Route::get('API/city/exist', [CityController::class, 'exist'])->name('api.city.exist');
+        Route::get('ajax/city/exist', [CityController::class, 'exist'])->name('api.city.exist');
     });
 });

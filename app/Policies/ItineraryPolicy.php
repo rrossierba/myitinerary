@@ -16,14 +16,14 @@ class ItineraryPolicy
         else if ($user && $user->id === $itinerary->user_id)
             return Response::allow();
         else
-            return Response::denyWithStatus(404, 'Itinerario non trovato');
+            return Response::denyWithStatus(403);
     }
 
     public function isOwner(User $user, Itinerary $itinerary)
     {
         return $user->id === $itinerary->user_id 
         ? Response::allow() 
-        : Response::denyWithStatus(403, 'Autorizzazione vietata per questo itinerario!');
+        : Response::denyWithStatus(403);
     }
     
     public function owns(User $user, Itinerary $itinerary): bool

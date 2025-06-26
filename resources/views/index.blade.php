@@ -16,9 +16,9 @@
 
     <section class="py-5 text-center">
         <div class="container">
-            <div class="row">
+            <div class="row g-2">
                 <div class="col-md-4">
-                    <div class="border rounded-2 p-2">
+                    <div class="border rounded-2 p-2 feature">
                         <a href="{{ route('search') }}" class="link-underline link-underline-opacity-0 link-dark">
                             <div class="feature-icon">
                                 <i class="bi bi-search"></i>
@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="border rounded-2 p-2">
+                    <div class="border rounded-2 p-2 feature">
                         <a href="{{ route('itinerary.create') }}" class="link-underline link-underline-opacity-0 link-dark">
                             <div class="feature-icon">
                                 <i class="bi bi-map"></i>
@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="border rounded-2 p-2">
+                    <div class="border rounded-2 p-2 feature">
                         <a href="{{ route('itinerary.index') }}" class="link-underline link-underline-opacity-0 link-dark">
                             <div class="feature-icon">
                                 <i class="bi bi-share"></i>

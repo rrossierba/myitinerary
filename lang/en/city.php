@@ -22,6 +22,7 @@ return [
     'missing_name_message' => 'Name is required',
     'missing_region_message' => 'Region is required',
     'city_already_existing_message' => 'City already exists',
+    'not_defined'=> 'not defined',
     'save' => 'Save',
     'modify' => 'Edit',
 ];

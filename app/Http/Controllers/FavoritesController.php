@@ -15,8 +15,8 @@ class FavoritesController extends Controller
      */
     public function index()
     {
-        $favouriteIds = Favorites::where('user_id', auth()->id())->pluck('itinerary_id');
-        $itineraries = Itinerary::whereIn('id', $favouriteIds)->get();
+        $favouriteIds = auth()->user()->favourites()->pluck('itinerary_id');
+        $itineraries = Itinerary::whereIn('id', $favouriteIds)->where('visibility', 'public')->get();
         return view('itinerary.favourites')
             ->with('itineraries', $itineraries);
     }

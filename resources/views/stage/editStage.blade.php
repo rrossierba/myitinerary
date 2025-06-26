@@ -60,7 +60,7 @@
                 });
 
                 $(document).on('click', '.removeStageBtn', function () {
-                    if (confirm('Cancellare la tappa?'))
+                    if (confirm('@lang('stage.remove_stage_message')?'))
                         $(this).closest('.stage-form').remove();
                 });
             });
@@ -83,12 +83,21 @@
                         <label for="stageSubmit" class="btn btn-success w-100" id="submitButton" style="display: none"><i
                                 class="bi bi-floppy"></i> @lang('stage.modify')</label>
                     @else
-                        <label for="stageSubmit" class="btn btn-success w-100"><i class="bi bi-floppy"></i> @lang('stage.save')</label>
+                        <label for="stageSubmit" class="btn btn-success w-100"><i class="bi bi-floppy"></i>
+                            @lang('stage.save')</label>
                     @endif
                 </div>
-                <div class="col-lg-2 col-md-4 col-6">
-                    <a href="{{ url()->previous() }}" class="btn btn-danger w-100"><i class="bi bi-x-lg"></i> @lang('stage.cancel')</a>
-                </div>
+                @if (isset($stage))
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <a href="{{ route('itinerary.edit', ['itinerary' => $itinerary]) }}" class="btn btn-danger w-100"><i
+                                class="bi bi-x-lg"></i> @lang('stage.cancel')</a>
+                    </div>
+                @elseif (isset($add))
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <a href="{{ route('itinerary.edit', ['itinerary' => $itinerary]) }}" class="btn btn-danger w-100"><i
+                                class="bi bi-x-lg"></i> @lang('stage.cancel')</a>
+                    </div>
+                @endif
             </div>
             <div id="stageContainer">
                 <div class="stage-form mb-3 justify-content-center">
@@ -115,9 +124,11 @@
                                                         placeholder="@lang('stage.duration') (@lang('stage.minutes'))">
                                                 @else
                                                     <input type="number" id="inputDuration" name="inputDuration[]" min="0"
-                                                        max="1000" class="form-control" placeholder="@lang('stage.duration') (@lang('stage.minutes'))">
+                                                        max="1000" class="form-control"
+                                                        placeholder="@lang('stage.duration') (@lang('stage.minutes'))">
                                                 @endif
-                                                <label for="inputDuration">@lang('stage.duration') (@lang('stage.minutes'))</label>
+                                                <label for="inputDuration">@lang('stage.duration')
+                                                    (@lang('stage.minutes'))</label>
                                             </div>
                                         </div>
                                         <div class="col">
