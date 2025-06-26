@@ -118,7 +118,7 @@ class CityController extends Controller
     }
 
     public function exist(Request $request){
-        if($request->get('cityRegexString')!== null){
+        if($request->get('cityString')!== null){
             $cityRegex = '/^([\p{L}\s\'\.\-]+) \(([\p{L}\s\'\.\-]+), ([\p{L}\s\'\.\-]+)\)$/u';
             
             $request->validate([
