@@ -15,8 +15,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CitySeeder::class,
             ItinerarySeeder::class,
+            FavouriteSeeder::class,
             StageSeeder::class,
-            FavouriteSeeder::class
         ]);
     }
 }

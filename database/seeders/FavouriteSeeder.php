@@ -20,7 +20,7 @@ class FavouriteSeeder extends Seeder
         foreach($users as $user){
             foreach ($itineraries as $itinerary) {
                 $i = rand(1,5);
-                if($i===1){
+                if($i===1 && $itinerary->user->id!== $user->id){
                     Favorites::factory()->create([
                         'user_id'=>$user->id,
                         'itinerary_id'=>$itinerary->id
