@@ -29,7 +29,7 @@
                 const deleteConfirmUrl = CITY_DESTROY_CONFIRM_BASE_URL.replace(':cityId', city.id);
 
                 $('#cityTableBody').append(
-                    `<tr><td>${city.name}</td><td>${city.region}</td><td>${city.state}</td><td><a class="btn btn-primary" href="${editUrl}"><i class="bi bi-pencil"></i> Modifica</a></td><td><a class="btn btn-danger" href="${deleteConfirmUrl}"><i class="bi bi-trash"></i> @lang('city.delete')</a></td></tr>`
+                    `<tr><td>${city.name}</td><td>${city.region}</td><td>${city.state}</td><td><a class="btn btn-primary" href="${editUrl}"><i class="bi bi-pencil"></i> @lang('city.modify')</a></td><td><a class="btn btn-danger" href="${deleteConfirmUrl}"><i class="bi bi-trash"></i> @lang('city.delete')</a></td></tr>`
                 );
             }
 
