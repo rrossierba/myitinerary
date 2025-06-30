@@ -31,6 +31,6 @@ Route::middleware(['auth:sanctum','isAdminApi'])->group(function() {
 Route::middleware(['auth:sanctum'])->group(function() {
     Route::post('/logout', function (Request $request) {
         $request->user()->currentAccessToken()->delete();
-        return response()->json(['message' => 'Logout effettuato']);
+        return response()->json(['message' => 'Logout']);
     });
 });

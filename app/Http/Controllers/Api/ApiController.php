@@ -19,7 +19,7 @@ class ApiController extends Controller
     public function getItinerariesByTitle(Request $request, string $title)
     {
         if (Itinerary::where('title', 'like', "%{$title}%")->exists())
-            return ItineraryResource::collection(Itinerary::where('title', 'like', "%{$title}%")->where('visibility' == 'public')->get());
+            return ItineraryResource::collection(Itinerary::where('visibility', 'public')->where('title', 'like', "%{$title}%")->get());
         else
             return response()->json(['data' => ['error' => 'itinerary not found']]);
     }
