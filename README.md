@@ -12,7 +12,7 @@
 
 #### ✅ Guest (All Visitors)
 
-* 🔎 **Search** itineraries by name or city (with pagination)
+* **Search** itineraries by name or city (with pagination)
 * ✅ View search results
 * If logged in:
 
@@ -105,7 +105,7 @@
 
 ---
 
-## 📅 Project Status
+## Project Status
 
 All core functionalities and validations were **completed and tested as of June 26, 2025**.
 MyItinerary is ready to be deployed or extended with additional features.
