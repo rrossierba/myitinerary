@@ -22,7 +22,7 @@
 
 #### ✅ Registered User
 
-* ✏️ **Manage Itineraries**
+* **Manage Itineraries**
 
   * Create itinerary with title and city
 
